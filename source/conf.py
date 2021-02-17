@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Suricata Hunting'
+project = 'Network Threat Hunting with Suricata'
 copyright = '2021, Stamus Networks'
 author = 'E. Leblond, P. Manev'
 
