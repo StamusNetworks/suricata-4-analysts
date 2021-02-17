@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Suricata Hunting'
-copyright = '2021, E. Leblond, P. Manev'
+copyright = '2021, Stamus Networks'
 author = 'E. Leblond, P. Manev'
 
 # The full version, including alpha/beta/rc tags
