@@ -68,7 +68,7 @@ pattern is well choosen, Suricata may just have one single signature to evaluate
 
 Let's use this signature as example ::
 
-  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "WinLoaded"; fast_pattern; startswith; pcre:"/Winloaded \d\.\d{2}/"; sid:1;)
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;)
 
 The evaluation of this signature by Suricata will be the following. It will be attached to the set of signatures
 that have the HTTP user agent as fast pattern. So the `WinLoaded` content match will be evaluated during
@@ -86,15 +86,128 @@ as fast pattern on the HTTP user agent.
 Testing performance and correctness of written rules
 ====================================================
 
+Suricata is here to help you write correct rules and there is a set of tools
+provided to do that.
+
 Engine analysis
 ---------------
 
-Get a view  on how bad your rules
+Simply run ::
+
+  suricata -S mynew.rules -l /tmp/analysis --engine-analysis
+
+And you will get information about the syntax of the rules ::
+
+  ls -l /tmp/analysis/
+  total 16
+  -rw-r--r-- 1 eric eric    0 Feb 17 18:58 eve.json
+  -rw-r--r-- 1 eric eric    0 Feb 17 18:58 fast.log
+  -rw-r--r-- 1 eric eric  733 Feb 17 18:58 rules_analysis.txt
+  -rw-r--r-- 1 eric eric  643 Feb 17 18:58 rules_fast_pattern.txt
+  -rw-r--r-- 1 eric eric  665 Feb 17 18:58 rules.json
+  -rw-r--r-- 1 eric eric    0 Feb 17 18:58 stats.log
+  -rw-r--r-- 1 eric eric 2314 Feb 17 18:58 suricata.log
+
+in the file ``rules_analysis.txt`` and ``rules_fast_pattern.txt``. In the first one, we have
+with previous signature and a variant ::
+
+  -------------------------------------------------------------------
+  Date: 17/2/2021 -- 19:30:28
+  -------------------------------------------------------------------
+  == Sid: 1 ==
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;)
+      Rule matches on http user agent buffer.
+      App layer protocol is http.
+      Rule contains 0 content options, 1 http content options, 0 pcre options, and 1 pcre options with http modifiers.
+      Fast Pattern "Winhttp" on "http user agent (http_user_agent)" buffer.
+      Warning: TCP rule without a flow or flags option.
+               -Consider adding flow or flags to improve performance of this rule.
+  
+  == Sid: 2 ==
+  alert http any any -> any any (msg:"Bad Agent, bad perf"; http.user_agent; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:2;)
+      Rule matches on http user agent buffer.
+      App layer protocol is http.
+      Rule contains 0 content options, 0 http content options, 0 pcre options, and 1 pcre options with http modifiers.
+      Warning: TCP rule without a flow or flags option.
+               -Consider adding flow or flags to improve performance of this rule.
+
+Here we see that the first signature has a fast pattern and miss some options on TCP flow. For the second one, where
+there is just a regular expression, we can see that there is no fast pattern and that the TCP flow options are missing
+too.
+
+For the fast pattern analysis there is ::
+
+  -------------------------------------------------------------------
+  Date: 17/2/2021 -- 19:30:28
+  -------------------------------------------------------------------
+  == Sid: 1 ==
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;)
+      Fast Pattern analysis:
+          Fast pattern matcher: http user agent (http_user_agent)
+          Flags: Depth
+          Fast pattern set: yes
+          Fast pattern only set: no
+          Fast pattern chop set: no
+          Original content: Winhttp
+          Final content: Winhttp
+  
+  == Sid: 2 ==
+  alert http any any -> any any (msg:"Bad Agent, bad perf"; http.user_agent; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:2;)
+      Fast Pattern analysis:
+          No content present
+
+Which confirm the fact that the second rules will trigger an evaluation of the regular expression for all the http request (where there is an http user agent).
 
 Rules profiling
 ---------------
 
-Get show examples of profiling output
+The information provided by Suricata in the engine analysis are really valuable but it is often
+really nice to see the impact on a real run. To do so, there is a profiling system inside Suricata
+that need to be activated during the build and can setup in the configuration.
+
+To build it you need to add ``--enable-profiling`` to the ``./configure`` command line. Suricata
+performance will be impacted but you will have a ``rule_perf.log`` file in your log directory with performance
+information ::
+
+  {
+    "timestamp": "2021-02-17T19:41:56.012543+0100",
+    "sort": "max ticks",
+    "rules": [
+      {
+        "signature_id": 2,
+        "gid": 1,
+        "rev": 0,
+        "checks": 1628,
+        "matches": 4,
+        "ticks_total": 2173774,
+        "ticks_max": 49498,
+        "ticks_avg": 1335,
+        "ticks_avg_match": 23204,
+        "ticks_avg_nomatch": 1281,
+        "percent": 93
+      },
+      {
+        "signature_id": 1,
+        "gid": 1,
+        "rev": 0,
+        "checks": 4,
+        "matches": 4,
+        "ticks_total": 149520,
+        "ticks_max": 41118,
+        "ticks_avg": 37380,
+        "ticks_avg_match": 37380,
+        "ticks_avg_nomatch": 0,
+        "percent": 6
+      }
+    ]
+  }
+
+Here, we see that the signature 2 did took 93% of CPU cycles compare to the second one at 6 percent. This was expected
+as we evaluate the regular expression for all HTTP requests. An interesting point is that, ``ticks_avg_nomatch`` is
+0 for the signature with fast pattern. The reason is that, when there is no ``Winhttp`` string in the HTTP user agent
+the MPM algorithm simply skip the evaluation of the rules and hence its cost is null. And with the incorrect signature
+we can see that the cost is 1281 ticks for every match attempt. And we have 4 ``checks`` for the signature 1 and
+1628 for the signature 2. Hence, the performance ratio.
 
 Guideline for performant rules
 ==============================
@@ -106,7 +219,7 @@ Pre filter all the things
 -------------------------
 
 Real life example
------------------
+=================
 
 When sunburst was made public a set of signatures was created soon after to detect some of the offensive tools used by Fireeye. Among them we had this snort like signature: ::
 
