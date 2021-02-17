@@ -11,6 +11,7 @@ Network Threat Hunting with Suricata
    :caption: Contents:
 
    write-performant-rules
+   tls-threat-hunting
 
 Indices and tables
 ==================
