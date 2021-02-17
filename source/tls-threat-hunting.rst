@@ -23,7 +23,8 @@ message and check that the server certificate is valid. If everything is fine, c
 its certificates and a seed needed to start the encrypted exchange. The server then initiate the encryption
 and the session switch to encryption.
 
-Before TLS 1.3, the X509 certificate is in clear text but in TLS 1.3, it is encrypted.
+Before TLS 1.3, the X509 certificate was in clear text but since TLS 1.3, it is encrypted. As
+a result visibility had been really limited with TLS 1.3.
 
 In most implementation, there is a TCP connection and then a TLS handshake but in some cases
 the server offers a clear text and an encrypted service on the same port. In this case, a
