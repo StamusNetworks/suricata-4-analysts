@@ -130,9 +130,11 @@ The ja3 part is the following
 
 .. code-block:: JSON
 
-  "ja3": {
-    "hash": "6734f37431670b3ab4292b8f60f29984",
-    "string": "769,47-53-5-10-49171-49172-49161-49162-50-56-19-4,65281-10-11,23-24,0"
+  {
+    "ja3" {
+      "hash": "6734f37431670b3ab4292b8f60f29984",
+      "string": "769,47-53-5-10-49171-49172-49161-49162-50-56-19-4,65281-10-11,23-24,0"
+    }
   }
 
 It is composed of 2 fields, a string that is build by concatenating a predefined list of negotiation parameters and a hash value that is simply the md5 hash of the string.
@@ -150,9 +152,11 @@ in our previous entry:
 
 .. code-block:: JSON
 
-  "ja3s": {
-    "hash": "623de93db17d313345d7ea481e7443cf",
-    "string": "769,49172,65281-11"
+  {
+    "ja3s": {
+      "hash": "623de93db17d313345d7ea481e7443cf",
+      "string": "769,49172,65281-11"
+    }
   }
 
 But there is a big difference between JA3 and JA3s. As the first message of the server is an answer to the client to continue the negotiation, the server message is dependant of the client.
