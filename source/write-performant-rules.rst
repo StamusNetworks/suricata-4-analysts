@@ -217,13 +217,57 @@ Guideline for performant rules
 Trigger multi pattern matching
 ------------------------------
 
+This is the main recommendation. When writing a rule you need to find a way to trigger MPM in an efficient way.
+This means the signature must have a content match on a pattern that is on a differentiator. It should be almost
+unique in the ruleset so it reduces the signature group to the lower number possible.
+
+In our previous example, we did use ``http.user_agent; content: "Winhttp";`` because the string ``Winhttp``
+is not common among HTTP user agents. This guarantee us an efficient prefiltering by the MPM engine. As we
+have seen previously in the profiling output, all the check done on the signature have been successful. The
+rest of the filters were just confirmation filter to avoid potential false positives.
+
+
 Pre filter all the things
 -------------------------
+
+This is just a reformulation of the previous exigence. Even, if the real match is a nasty regular expression,
+you need to find the longest string possible with a efficient differentiator capability.
+
+Matching on IOCs
+----------------
+
+In a lot of case, indicator of compromises comes as list of domain, IP, user agent to match
+against the produce data. An already seen approach consits in generating a rule for each IOC.
+This will match but the performance impact will be huge.
+
+If you have to match on an IP list, it is better to use the IP reputation system via the `iprep <https://suricata.readthedocs.io/en/latest/rules/ip-reputation-rules.html>`_ keyword
+that allows a fast match and one single rule for a crazy number of IP addresses.
+
+The same can be done for file hash via the keywords `filemd5 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?highlight=filemd5#filemd5>`_, `filesha1 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?highlight=filemd5#filesha1>`_, `filesha256 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?highlight=filemd5#filesha256>`_ that matches on
+list of file hashes. For example, with a list of sha256 file hashes named ``known-bad-sha256.lst``, one can
+use the signatures ::
+
+  alert smb any any -> any any (msg:"known bad file on SMB"; filesha256:"known-bad-sha256.lst"; sid:1; rev:1;)
+  alert nfs any any -> any any (msg:"known bad file on NFS"; filesha256:"known-bad-sha256.lst"; sid:2; rev:1;)
+  alert http any any -> any any (msg:"known bad file on HTTP"; filesha256:"known-bad-sha256.lst"; sid:3; rev:1;)
+  alert ftp-data any any -> any any (msg:"known bad file on FTP"; filesha256:"known-bad-sha256.lst"; sid:4; rev:1;)
+  alert smtp any any -> any any (msg:"known bad file on SMTP"; filesha256:"known-bad-sha256.lst"; sid:5; rev:1;)
+
+Introduced in Suricata 5.0, `dataset <https://suricata.readthedocs.io/en/latest/rules/datasets.html>`_ is filling the gap for over existing IOCs. It can be used with any sticky
+buffers. For example, if you have a list of HTTP user agents in ``bad-http-agent.lst``, you can use
+a signature similar to the following ::
+
+  alert http any any -> any any (msg:"bad user agent"; \
+      http.user_agent; dataset:isset,bad-http-agent,type string,load:http-user-agent.lst,memcap:1G,hashsize:1000000; \
+      sid 6; rev:1;)
+
+Please note, that in the case of a dataset with string type, the set needs to be first encoded to base64 (without the trailing
+character).
 
 Real life example
 =================
 
-When sunburst was made public a set of signatures was created soon after to detect some of the offensive tools used by Fireeye. Among them we had this snort like signature: ::
+When `Sunburst <https://www.fireeye.com/blog/threat-research/2020/12/evasive-attacker-leverages-solarwinds-supply-chain-compromises-with-sunburst-backdoor.html>`_ was made public a set of signatures was created soon after to detect some of the offensive tools used by Fireeye. Among them we had this Snort like signature: ::
 
   alert tcp any $HTTP_PORTS -> any any (msg:"Backdoor.HTTP.BEACON.[CSBundle MSOffice Server]"; content:"HTTP/1."; depth:7; \
         content:"{\"meta\":{},\"status\":\"OK\",\"saved\":\"1\",\"starttime\":17656184060,\"id\":\"\",\"vims\":{\"dtc\":\""; \
@@ -323,28 +367,5 @@ And this allows on one side efficient and flexible classifications of the alert 
 Or for the created and updated date, a nice way to see which recent signatures did fire on the probes:
 
 .. image:: img/signatures-ordered.png
-
-Enhance produced events
-=======================
-
-Metadata for classification
----------------------------
-
-As the keys and value in metadata have no constraints (but on formatting), you can define your own semantic and organization if you work on your set of rules.
-Extract information
-
-
-Recent evolution
-================
-
-Sticky buffers
---------------
-
-The switch from content modifier to sticky buffers
-
-Datasets
---------
-
-IOC baby
 
 
