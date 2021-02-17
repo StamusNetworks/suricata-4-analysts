@@ -180,10 +180,11 @@ These metadata are important because we will find them in the alert event:
 
 And this allows on one side efficient and flexible classifications of the alert events that can be used in queries and interface. For example, it can be used to present the variety of alerts seen in a system:
 
-
+.. image:: img/alert-sig-metadata.png
 
 Or for the created and updated date, a nice way to see which recent signatures did fire on the probes:
 
+.. image:: img/signatures-ordered.png
 
 Enhance produced events
 =======================
