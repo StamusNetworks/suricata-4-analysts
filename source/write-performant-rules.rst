@@ -167,7 +167,9 @@ that need to be activated during the build and can setup in the configuration.
 
 To build it you need to add ``--enable-profiling`` to the ``./configure`` command line. Suricata
 performance will be impacted but you will have a ``rule_perf.log`` file in your log directory with performance
-information ::
+information
+
+.. code-block:: JSON
 
   {
     "timestamp": "2021-02-17T19:41:56.012543+0100",
