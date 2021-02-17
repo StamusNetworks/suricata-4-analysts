@@ -64,7 +64,7 @@ at the fast pattern buffer. The buffer that has been selected to be used with
 the multi pattern algorithm. There can be only one buffer as this will guarantee
 a perfect partitions of the ruleset. And once the MPM algorithm has returned there
 will be just a really small subset of signatures to evaluate. Ideally if the
-pattern is well choosen, Suricata may just have one single signature to evaluate.
+pattern is well chosen, Suricata may just have one single signature to evaluate.
 
 Let's use this signature as example ::
 
@@ -237,7 +237,7 @@ Matching on IOCs
 ----------------
 
 In a lot of case, indicator of compromises comes as list of domain, IP, user agent to match
-against the produce data. An already seen approach consits in generating a rule for each IOC.
+against the produce data. An already seen approach consists in generating a rule for each IOC.
 This will match but the performance impact will be huge.
 
 If you have to match on an IP list, it is better to use the IP reputation system via the `iprep <https://suricata.readthedocs.io/en/latest/rules/ip-reputation-rules.html>`_ keyword
