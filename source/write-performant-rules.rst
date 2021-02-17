@@ -59,7 +59,28 @@ is called `Aho–Corasick algorithm <https://en.wikipedia.org/wiki/Aho%E2%80%93C
 
 This method allows a really effective split of signatures.
 
-First 
+First, Suricata separates the signatures by IP parameters, then it looks
+at the fast pattern buffer. The buffer that has been selected to be used with
+the multi pattern algorithm. There can be only one buffer as this will guarantee
+a perfect partitions of the ruleset. And once the MPM algorithm has returned there
+will be just a really small subset of signatures to evaluate. Ideally if the
+pattern is well choosen, Suricata may just have one single signature to evaluate.
+
+Let's use this signature as example ::
+
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "WinLoaded"; fast_pattern; startswith; pcre:"/Winloaded \d\.\d{2}/"; sid:1;)
+
+The evaluation of this signature by Suricata will be the following. It will be attached to the set of signatures
+that have the HTTP user agent as fast pattern. So the `WinLoaded` content match will be evaluated during
+the MPM phase with all the others match. One pass algorithm to rules them all. If ever there is a match, then
+the signature will be fully evaluated, content will be checked (with starts with modification), the regular
+expression `pcre:"/Winloaded \d\.\d{2}/"` will be verified.
+So if `Winloaded` is a efficient differentiator among the HTTP user agents value, Suricata may have only one single
+signature to fully evaluate instead of the 60000.
+
+This approach allows Suricata to analyse the full ruleset in a way that is not dependant of the number of
+signatures if the signature are correctly written and for example we don't have half of them using `Mozilla`
+as fast pattern on the HTTP user agent.
 
 
 Testing performance and correctness of written rules
@@ -87,9 +108,11 @@ Pre filter all the things
 Real life example
 -----------------
 
-When sunburst was made public a set of signatures was created soon after to detect some of the offensive tools used by Fireeye. Among them we had this snort like signature:
+When sunburst was made public a set of signatures was created soon after to detect some of the offensive tools used by Fireeye. Among them we had this snort like signature: ::
 
-alert tcp any $HTTP_PORTS -> any any (msg:"Backdoor.HTTP.BEACON.[CSBundle MSOffice Server]"; content:"HTTP/1."; depth:7; content:"{\"meta\":{},\"status\":\"OK\",\"saved\":\"1\",\"starttime\":17656184060,\"id\":\"\",\"vims\":{\"dtc\":\""; sid:25887; rev:1;)
+  alert tcp any $HTTP_PORTS -> any any (msg:"Backdoor.HTTP.BEACON.[CSBundle MSOffice Server]"; content:"HTTP/1."; depth:7; \
+        content:"{\"meta\":{},\"status\":\"OK\",\"saved\":\"1\",\"starttime\":17656184060,\"id\":\"\",\"vims\":{\"dtc\":\""; \
+        sid:25887; rev:1;)
 
 This signature has some serious problems when run inside Suricata. The engine analysis gives the following result: ::
 
