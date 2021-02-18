@@ -9,8 +9,8 @@ The detection engine optimization challenge
 -------------------------------------------
 
 Suricata is able to run at speed like 40Gbps with full ETPro ruleset loaded.
-This means around 60000 signatures loaded and inspecting as a best case scenario
-3,333,333 packets per second.
+This means that around 60000 signatures are loaded and Suricata needs to inpsect all of them
+at the speed of 3,333,333 packets per second (which is a best case scenario at 40Gbps).
 
 This means there is a budget of .000000000005 second per rule. And, in this
 .005 ns per rule, Suricata must do protocol analysis, content matching and runs regular expression.
