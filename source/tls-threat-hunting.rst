@@ -184,14 +184,53 @@ Extensive documentation and syntax explanation is available in Suricata document
 Cookbook
 --------
 
-Checking that internal PKI is used
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Detecting expired certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Verifying a list of JA3
-~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's get an alert when one of the a server we monitor has an expired certificate
+
+.. code-block::
+
+  alert tls $SERVERS any -> any any (msg:"Expired certs on server"; \\
+       tls_cert_expired; \\
+       sid:1; rev:1;)
+
+Here we simply use, the `tls_cert_expired` keyword and the `$SERVERS` variable that needs to be placed on the left as
+the certificate data we want to check are coming from the servers.
+
+Checking that internal PKI is used
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The company we work for is running an expensive PKI and we want to be sure it is used for all the services running on our servers.
+If the TLS issuer of our PKI is `C=US, O=My Company`, we can simply use the following signature that leverage the `tls.cert_issuer`
+sticky buffer keyword.
+
+.. code-block::
+
+  alert tls $SERVERS any -> any any (msg:"Non Company PKI on server"; \\
+       tls.cert_issuer; content:!"C=US, O=My Company"; \\
+       sid:2; rev:1;)
+
+We use an `!` on the content keyword to negate the match.
+
+If we need to deal with history we can just do trigger alert for certificate where the beginning of validity is after the date when
+the PKI is supposed to be implemented everywhere:
+
+.. code-block::
+
+  alert tls $SERVERS any -> any any (msg:"Non Company PKI on server"; \\
+       tls.cert_issuer; content:!"C=US, O=My Company"; \\
+       tls_cert_notbefore:>2021-04-01; \\
+       sid:2; rev:1;)
+
+
+Checking TTP on certificate building
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Verifying a list of known bad JA3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
