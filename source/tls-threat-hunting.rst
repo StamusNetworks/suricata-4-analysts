@@ -1,6 +1,6 @@
-==================
-TLS Threat Hunting
-==================
+================================
+TLS Detection and Threat Hunting
+================================
 
 Introduction
 ============
@@ -10,7 +10,7 @@ developed for the Mozilla browser has evolved into one of the most prominent
 standard. It is used massively on HTTPS and all over the place to encrypt communication.
 Yes, encrypt, which for network security is equivalent to say hide all the juicy details.
 
-But there is still information that can be extracted or built and this can be used for threat
+But there is still information that can be extracted or built. This can be used for threat
 hunting as well as for an IDS approach.
 
 Protocol overview
@@ -165,6 +165,36 @@ As a result, the JA3s is in fact an identifier of a client and server connection
 a server will result in two different JA3s value.
 
 
+TLS and Detection
+=================
+
+TLS keywords
+------------
+
+As usual, it is recommended to use all sticky buffers variant as they are offering more flexbility and better performance.
+
+There is two classes of keywords, the one matching the TLS certificate information and the one matching on ja3 and ja3s data.
+
+.. csv-table::
+  :file: tls-keywords.csv
+  :header-rows: 1
+
+Extensive documentation and syntax explanation is available in Suricata documentation in the `TLS keywords page <https://suricata.readthedocs.io/en/latest/rules/tls-keywords.html>`_.
+
+Cookbook
+--------
+
+Checking that internal PKI is used
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Detecting expired certificates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Verifying a list of JA3
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
 Hunting on TLS events
 =====================
 
@@ -174,5 +204,4 @@ Self signed certificate
 Unsecure protocol
 -----------------
 
-Writing Suricata signatures on TLS
-==================================
+

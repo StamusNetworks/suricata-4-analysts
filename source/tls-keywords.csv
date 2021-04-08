@@ -1,0 +1,16 @@
+Name,Description
+tls.sni,sticky buffer to match specifically and only on the TLS SNI
+tls.certs,sticky buffer to match the TLS certificate
+tls.cert_issuer,sticky buffer to match specifically and only on the TLS cert issuer
+tls.cert_subject,sticky buffer to match specifically and only on the TLS cert subject
+tls.cert_serial,sticky buffer to match the TLS cert serial
+tls.cert_fingerprint,sticky buffer to match on the TLS cert fingerprint
+tls.version,match on TLS/SSL version
+tls_cert_notbefore,match TLS certificate notBefore field
+tls_cert_notafter,match TLS certificate notAfter field
+tls_cert_expired,match expired TLS certificates
+tls_cert_valid,match not expired TLS certificates
+ja3.hash,sticky buffer to match the JA3 hash
+ja3.string,sticky buffer to match the JA3 string
+ja3s.hash,sticky buffer to match the JA3S hash
+ja3s.string,sticky buffer to match the JA3S string
