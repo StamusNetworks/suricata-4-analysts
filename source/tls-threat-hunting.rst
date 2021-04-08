@@ -225,9 +225,23 @@ the PKI is supposed to be implemented everywhere:
        sid:2; rev:1;)
 
 
-Checking TTP on certificate building
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Checking Tactiques, Techniques and Procedure on certificate building
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Creating correctly TLS certificates is not the most trivial task and it is the same for attacker. For example,
+some Ursnif campaign have been using certificates where the subject DN was of the form `C=XX, ST=1, L=1, O=1, OU=1, CN=*`. This `XX` and `1`
+are not something expected in regular certificates and it is a mark of the (Tactiques Techniques an Procedures) TTP of the attacker.
+
+This is something we can detect with a signature:
+
+.. code-block::
+
+  alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"Ursnif like certificate"; \\
+       tls.cert_subject; content:"C=XX"; content:"=1,";
+       sid:3; rev:1;)
+
+Here we alert when a certificate on an external server is using a certificate that follow the pattern we have found in he
+Ursnif campaign.
 
 Verifying a list of known bad JA3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
