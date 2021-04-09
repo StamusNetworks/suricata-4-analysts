@@ -7,7 +7,7 @@ Introduction
 
 The TLS protocol is everywhere. The Secure Socket Layer implementation initially
 developed for the Mozilla browser has evolved into one of the most prominent
-standard. It is used massively on HTTPS and all over the place to encrypt communication.
+standards. It is widely used in HTTPS and other communications protocols to encrypt communication.
 Yes, encrypt, which for network security is equivalent to say hide all the juicy details.
 
 But there is still information that can be extracted or built. This can be used for threat
@@ -16,7 +16,7 @@ hunting as well as for an IDS approach.
 Protocol overview
 =================
 
-In all version of TLS, the client is opening a connection to the server and sends an initial message.
+In all versions of TLS, the client is opening a connection to the server and sends an initial message.
 It contains the client capabilities in term of encryption. Using that the server then replies with
 potential agreement on encryption technique to use as well as its certificates. Client analyses this
 message and check that the server certificate is valid. If everything is fine, client sends
