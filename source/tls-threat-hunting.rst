@@ -237,10 +237,10 @@ This is something we can detect with a signature:
 .. code-block::
 
   alert tls $EXTERNAL_NET any -> $HOME_NET any (msg:"Ursnif like certificate"; \\
-       tls.cert_subject; content:"C=XX"; content:"=1,";
+       tls.cert_subject; content:"C=XX"; content:"=1,"; \\
        sid:3; rev:1;)
 
-Here we alert when a certificate on an external server is using a certificate that follow the pattern we have found in he
+Here we alert when a certificate on an external server is using a certificate that follows the pattern we have found in the
 Ursnif campaign.
 
 Verifying a list of known bad JA3
