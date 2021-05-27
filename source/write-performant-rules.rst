@@ -8,21 +8,21 @@ Suricata detection engine optimizations
 The detection engine optimization challenge
 -------------------------------------------
 
-Suricata is able to run at speed like 40Gbps with full ETPro ruleset loaded.
+Suricata is able to run at a speed like 40Gbps with full ETPro ruleset loaded.
 This means that around 60000 signatures are loaded and Suricata needs to inspect all of them
 at the speed of 3,333,333 packets per second (which is a best case scenario at 40Gbps).
 
 This means there is a budget of .000000000005 second per rule. And, in this
-.005 ns per rule, Suricata must do protocol analysis, content matching and runs regular expression.
+.005 ns per rule, Suricata must do protocol analysis, content matching and run regular expression.
 
 With a 3GHz CPU, we have a CPU cycle of 3 ns. So a brute force approach of the detection engine
 is 3 orders of magnitude too small even if a test was taking one single cycle.
 
 Thus some serious optimizations are mandatory. Scaling via multithreading to use all core on the system
 is a key point here and Suricata does it very well. But on a one hundred core system, it will only lead to a
-100 factor improvement and we thus still one order of magnitude below the really bare minimum we need.
+100 factor improvement and we are thus still one order of magnitude below the really bare minimum we need.
 
-Load balancing work on CPU is a key point but we still not can address the
+Load balancing work on the CPU is a key point but we still cannot address the
 60000 rules. We need less. But doing less will lower the threat coverage
 so we need to get beyond that.
 
@@ -30,15 +30,15 @@ so we need to get beyond that.
 Grouping signatures
 -------------------
 
-This initial approach is quite simple: why should we evaluate a rule on an UDP flow if we are currently
+This initial approach is quite simple: why should we evaluate a rule on a UDP flow if we are currently
 inspecting a TCP packet. By doing a protocol split we can in a perfect case divide by two the number of signature
 to evaluate.
 
 And as we are here, we can also group signatures by protocol port and build a tree where we group
 by network parameters and get groups of signatures in the leafs.
 
-This is an interesting first step, but I'm sure some reader are already complaining
-about the fact everything in their network is HTTP or TLS. And thus they have only 2 used groups.
+This is an interesting first step, but I'm sure some readers are already complaining
+about the fact that everything in their network is HTTP or TLS. And thus they have only 2 used groups.
 
 Something else is needed.
 
@@ -47,14 +47,14 @@ Multi pattern matching
 ----------------------
 
 As we can not differentiate on the IP parameters, we need to go higher in the protocol stack to
-do the same thing. But, well, an alert can match on HTTP user agent or can match on file data
+do the same thing. But an alert can match on HTTP user agent or can match on file data
 transfered over SMB. And given the complexity of the fields we are matching on we can not do a
 implementation of the tree. But let's take one step back. In all this cases, we are doing
 pattern matching on one buffer (HTTP user agent, file data, ...) and we would have a wonderful
 performance gain if we could have an automatic tree built up for the patterns we are looking for
 on this buffer.
 
-This type of algorithm is name multi pattern matching and the most famous implementation
+This type of algorithm is named multi pattern matching (MPM) and the most famous implementation
 is called `Aho–Corasick algorithm <https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm>`_.
 
 This method allows a really effective split of signatures.
@@ -62,13 +62,13 @@ This method allows a really effective split of signatures.
 First, Suricata separates the signatures by IP parameters, then it looks
 at the fast pattern buffer. The buffer that has been selected to be used with
 the multi pattern algorithm. There can be only one buffer as this will guarantee
-a perfect partitions of the ruleset. And once the MPM algorithm has returned there
+a perfect partition of the ruleset. And once the MPM algorithm has returned there
 will be just a really small subset of signatures to evaluate. Ideally if the
 pattern is well chosen, Suricata may just have one single signature to evaluate.
 
 Let's use this signature as example ::
 
-  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;)
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;) --PO This rule does not match the paragraph below
 
 The evaluation of this signature by Suricata will be the following. It will be attached to the set of signatures
 that have the HTTP user agent as fast pattern. So the `WinLoaded` content match will be evaluated during
@@ -163,11 +163,11 @@ Rules profiling
 
 The information provided by Suricata in the engine analysis are really valuable but it is often
 really nice to see the impact on a real run. To do so, there is a profiling system inside Suricata
-that need to be activated during the build and can setup in the configuration.
+that need to be activated during the build and can be setup in the configuration.
 
 To build it you need to add ``--enable-profiling`` to the ``./configure`` command line. Suricata
 performance will be impacted but you will have a ``rule_perf.log`` file in your log directory with performance
-information
+information - PO Should we mention that this parameter should only be done for testing and not in production?
 
 .. code-block:: JSON
 
@@ -204,7 +204,7 @@ information
     ]
   }
 
-Here, we see that the signature 2 did took 93% of CPU cycles compare to the second one at 6 percent. This was expected
+Here, we see that signature 2 did took 93% of CPU cycles compare to the second one at 6 percent. This was expected
 as we evaluate the regular expression for all HTTP requests. An interesting point is that, ``ticks_avg_nomatch`` is
 0 for the signature with fast pattern. The reason is that, when there is no ``Winhttp`` string in the HTTP user agent
 the MPM algorithm simply skip the evaluation of the rules and hence its cost is null. And with the incorrect signature
@@ -219,11 +219,11 @@ Trigger multi pattern matching
 
 This is the main recommendation. When writing a rule you need to find a way to trigger MPM in an efficient way.
 This means the signature must have a content match on a pattern that is on a differentiator. It should be almost
-unique in the ruleset so it reduces the signature group to the lower number possible.
+unique in the ruleset so it reduces the signature group to the lowest number possible.
 
-In our previous example, we did use ``http.user_agent; content: "Winhttp";`` because the string ``Winhttp``
-is not common among HTTP user agents. This guarantee us an efficient prefiltering by the MPM engine. As we
-have seen previously in the profiling output, all the check done on the signature have been successful. The
+In our previous example, we used ``http.user_agent; content: "Winhttp";`` because the string ``Winhttp``
+is not common among HTTP user agents. This guaranteed us an efficient prefiltering by the MPM engine. As we
+have seen previously in the profiling output, all the checks done on the signature have been successful. The
 rest of the filters were just confirmation filter to avoid potential false positives.
 
 
@@ -236,7 +236,7 @@ you need to find the longest string possible with a efficient differentiator cap
 Matching on IOCs
 ----------------
 
-In a lot of case, indicator of compromises comes as list of domain, IP, user agent to match
+In a lot of cases, indicator of compromises comes as list of domain, IP, user agent to match
 against the produce data. An already seen approach consists in generating a rule for each IOC.
 This will match but the performance impact will be huge.
 
@@ -284,7 +284,7 @@ This signature has some serious problems when run inside Suricata. The engine an
     Warning: Rule has depth/offset with raw content keywords.  Please note the offset/depth will be checked against both packet payloads and stream.  If you meant to have the offset/depth checked against just the payload, you can update the signature as "alert tcp-pkt..."
     Warning: Rule is inspecting both the request and the response.
 
-First warning is about the lack of option, signature is not checking the direction (to client in our case) or ensuring the flow is established. Second warning is more interesting because it warns us that Suricata will inspect twice the content, one time for every TCP packet and one time for each TCP stream. And finally the third warning is mentioning that the signature could inspect request and response (if ever HTTP_PORTS variable is broad).
+First warning is about the lack of option, signature is not checking the direction (to client in our case) or ensuring the flow is established. Second warning is more interesting because it warns us that Suricata will inspect the content twice, one time for every TCP packet and one time for each TCP stream. And finally the third warning is mentioning that the signature could inspect request and response (if ever HTTP_PORTS variable is broad).
 
 But the presence itself of HTTP_PORTS is a problem. If ever the attacker changes the port of the web server, to something not covered by the variable, we will miss the detection. A typical Suricata signature will fix that by making use of the port independent protocol detection. This can simply be done by doing: ::
 
@@ -341,7 +341,7 @@ As expected, we have no warning when doing the engine analysis: ::
     Fast Pattern "{\x22meta\x22:{},\x22status\x22:\x22OK\x22,\x22saved\x22:\x221\x22,\x22starttime\x22:17656184060,\x22id\x22:\x22\x22,\x22vims\x22:{\x22dtc\x22:\x22" on "http response body, smb files or smtp attachments data (file_data)" buffer.
     No warnings for this rule.
 
-The signature has some differences with our attempt. It uses file.data to match in the http.response_body but it is quite the same thing. It also forces the fast_patter on this part of the content which should not be necessary but is always safe to do.
+The signature has some differences with our attempt. It uses file.data to match in the http.response_body but it is quite the same thing. It also forces the fast_pattern on this part of the content which should not be necessary but is always safe to do.
 
 And the rest is metadata and information. We first have the reference: ::
 
