@@ -8,34 +8,22 @@ Suricata detection engine optimizations
 The detection engine optimization challenge
 -------------------------------------------
 
-Suricata is able to run at a speed like 40Gbps with full ETPro ruleset loaded.
-This means that around 60000 signatures are loaded and Suricata needs to inspect all of them
-at the speed of 3,333,333 packets per second (which is a best case scenario at 40Gbps).
+In demanding enterprise environments, Suricata must opearate at a very high network speeds -- like 40Gbps and 100Gbps -- with the full ETPro ruleset loaded. That ruleset is approximately 60,000 signatures, and in order to keep up with line rate, Suricata must inspect all of them at the rate of 3,333,333 packets per second (for 40Gbps).
 
-This means there is a budget of .000000000005 second per rule. And, in this
-.005 ns per rule, Suricata must do protocol analysis, content matching and run regular expression.
+So, at 40Gbps there is a budget of .000000000005 seconds per rule. And in this .005 ns per rule, Suricata must do protocol analysis, content matching and execute a regular expression.
 
-With a 3GHz CPU, we have a CPU cycle of 3 ns. So a brute force approach of the detection engine
-is 3 orders of magnitude too small even if a test was taking one single cycle.
+In a typical 3GHz CPU, we have a CPU cycle of 3 ns. So using a brute force approach in the detection engine is 3 orders of magnitude too little, even if a test takes only a single cycle.
 
-Thus some serious optimizations are mandatory. Scaling via multithreading to use all core on the system
-is a key point here and Suricata does it very well. But on a one hundred core system, it will only lead to a
-100 factor improvement and we are thus still one order of magnitude below the really bare minimum we need.
+Thus, some serious optimizations are needed. Scaling via multithreading to use all cores on the system is a key point here, and Suricata does this very well. But even on a one hundred core system, it will only lead to a 100 factor improvement, and this still leaves us with an order of magnitude below the  bare minimum needed for the task.
 
-Load balancing work on the CPU is a key point but we still cannot address the
-60000 rules. We need less. But doing less will lower the threat coverage
-so we need to get beyond that.
-
+Running load balancing on the CPU is a key point, but we still cannot address the 60,000 rules. In this case, we would need to reduce the rules processed - we need fewer. But running fewer rules will reduce the threat coverage, so we need to do better.
 
 Grouping signatures
 -------------------
 
-This initial approach is quite simple: why should we evaluate a rule on a UDP flow if we are currently
-inspecting a TCP packet. By doing a protocol split we can in a perfect case divide by two the number of signature
-to evaluate.
+This initial approach is quite simple: why should we evaluate a rule on a UDP flow if we are currently inspecting a TCP packet? By doing a protocol split, we can in a perfect case, divide the number of signatures to evaluate by two.
 
-And as we are here, we can also group signatures by protocol port and build a tree where we group
-by network parameters and get groups of signatures in the leafs.
+And while we are at it, we can group signatures by protocol port and group network parameters into a tree and place groups of signatures in the leafs.
 
 This is an interesting first step, but I'm sure some readers are already complaining
 about the fact that everything in their network is HTTP or TLS. And thus they have only 2 used groups.
