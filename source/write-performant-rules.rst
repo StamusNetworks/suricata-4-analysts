@@ -209,6 +209,11 @@ The Suricata Language Server
 
 Suricata Language Server is an implementation of the Language Server Protocol for Suricata signatures.
 It adds syntax check and hints as well as auto-completion to your preferred editor once it is configured.
+Information displayed in the editor is really valuable when writing Suricata signatures as it
+ensures the rules syntax is correct and it provides hint about writing performant rules.
+
+Editors that are known to support the Suricata Language Server are Neovim, Visual Studio Code,
+Sublime Text 3, Kate but any editor supporting the Language Server Protocol should support it.
 
 .. image:: img/vscode-sample.png
 
@@ -224,6 +229,7 @@ is providing errors to the diagnostic. Warnings and hints are also provided by u
 detection engine analysis done by Suricata. This is returning warnings and hints about the potential
 issues seen of the signatures.
 
+You can get the `Suricata Language Server <https://github.com/StamusNetworks/suricata-language-server>`_ from GitHub.
 
 Guideline for performant rules
 ==============================
