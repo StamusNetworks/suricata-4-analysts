@@ -146,6 +146,9 @@ For the fast pattern analysis there is ::
 
 Which confirm the fact that the second rules will trigger an evaluation of the regular expression for all the http request (where there is an http user agent).
 
+Information about the structure of the signature is also available in ``rules.json``. It is less human friendly but follow the evolution of Suricata detection
+engine more closely. This output is for example used by the :ref:`Suricata Language Server <suricata-ls>` to build advanced analysis of the signatues file.
+
 Rules profiling
 ---------------
 
@@ -198,6 +201,29 @@ as we evaluate the regular expression for all HTTP requests. An interesting poin
 the MPM algorithm simply skip the evaluation of the rules and hence its cost is null. And with the incorrect signature
 we can see that the cost is 1281 ticks for every match attempt. And we have 4 ``checks`` for the signature 1 and
 1628 for the signature 2. Hence, the performance ratio.
+
+.. _suricata-ls:
+
+The Suricata Language Server
+============================
+
+Suricata Language Server is an implementation of the Language Server Protocol for Suricata signatures.
+It adds syntax check and hints as well as auto-completion to your preferred editor once it is configured.
+
+.. image:: img/vscode-sample.png
+
+Suricata Language Server currently supports auto-completion and advanced syntax checking. Both features are
+using the capabilities of the Suricata available on the system. This means that the list of keywords (with
+documentation information) is coming for Suricata itself and it is the same for the syntax checking. This
+comes at the cost to have Suricata installed on your system but at the same time, it guarantees a strict
+checking of signatures with respect to the Suricata version you are running. Pushing signatures to
+production will not result in bad surprise as the syntax has already been checked by the same engine.
+
+Syntax checking is done when saving the files. A configuration test is started using Suricata. This
+is providing errors to the diagnostic. Warnings and hints are also provided by using a
+detection engine analysis done by Suricata. This is returning warnings and hints about the potential
+issues seen of the signatures.
+
 
 Guideline for performant rules
 ==============================
