@@ -21,7 +21,9 @@ A signature has 3 parts:
  * IP options to indicate the characteristics of the IP flow
  * Match and information for the signature
 
-Let's take an example ::
+Let's take an example: 
+
+.. code-block::
 
  alert http any any -> any any (msg:"http"; \
    http.host; content:"suricata.io"; \
@@ -35,7 +37,9 @@ of the signature.
 
 Let's take a more complete example where we want the flow to be from the internal network
 (identified by the variable $HOME_NET) to the outside world (identified by the variable $EXTERNAL_NET)
-and with destination port ``8080`` ::
+and with destination port ``8080``:
+
+.. code-block::
 
  alert http $HOME_NET any -> $EXTERNAL_NET 8080 (msg:"http"; \
    http.host; content:"suricata.io"; \
@@ -61,7 +65,9 @@ It is recommended to only use sticky buffer keywords in newly written rules.
 Sticky buffer keywords
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The sticky buffer keyword set the context for the next content matches. For example ::
+The sticky buffer keyword set the context for the next content matches. For example:
+
+.. code-block::
 
  http.host; content:"www"; content:"toto"; pcre:"/toto.[com|org]$/"; \
  http.method; content:"GET";
@@ -77,7 +83,9 @@ Content modifiers keywords
 
 The content modifier keywords alter the context of the previous content keyword. As a
 result the keywords need to be repeated. So if we want to implement the previous example,
-we will need to have ::
+we will need to have:
+
+.. code-block::
 
  content:"www"; http_host; content:"toto"; http_host; pcre:"/toto.[com|org]$/W"; \
  content:"GET"; http_method;
@@ -89,7 +97,9 @@ on the HTTP host.
 Getting keywords from Suricata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use the following commands ::
+You can use the following commands:
+
+.. code-block::
 
  suricata --list-keywords
  =====Supported keywords=====
@@ -99,7 +109,9 @@ You can use the following commands ::
  - classtype
  - app-layer-protocol
 
-Information about a specific keyword can be obtained via ::
+Information about a specific keyword can be obtained via:
+
+.. code-block::
 
  suricata --list-keywords=http.host
  = http.host =
@@ -107,7 +119,9 @@ Information about a specific keyword can be obtained via ::
  Features: No option,sticky buffer
  Documentation: https://suricata.readthedocs.io/en/latest/rules/http-keywords.html#http-host-and-http-raw-host
 
-And a full export of the keywords in CSV format can be generated with ::
+And a full export of the keywords in CSV format can be generated with:
+
+.. code-block::
 
  suricata --list-keywords=csv
  name;description;app layer;features;documentation
