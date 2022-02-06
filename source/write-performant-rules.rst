@@ -376,16 +376,32 @@ And then we have the metadata: ::
   metadata:affected_product Windows_XP_Vista_7_8_10_Server_32_64_Bit, attack_target Client_Endpoint,\
         created_at 2020_12_08, deployment Perimeter, signature_severity Major, updated_at 2020_12_12;
 
-These metadata are important because we will find them in the alert event:
+These metadata are important because we will find them in the alert event as shown on :numref:`alert-metadata`
 
-.. image:: img/alert-metadata.png
+.. _alert-metadata:
 
-And this allows on one side efficient and flexible classifications of the alert events that can be used in queries and interface. For example, it can be used to present the variety of alerts seen in a system:
+.. figure:: img/alert-metadata.png
+   :scale: 70 %
 
-.. image:: img/alert-sig-metadata.png
+   Metadata in the alert event
 
-Or for the created and updated date, a nice way to see which recent signatures did fire on the probes:
+And this allows on one side efficient and flexible classifications of the alert events that can be used in queries and interface. For example, it can be used to present the variety of alerts seen in a system like shown on :numref:`metadata-panel`
 
-.. image:: img/signatures-ordered.png
+.. _metadata-panel:
+
+.. figure:: img/alert-sig-metadata.png
+
+   Panels using signature metadata in Scirius
+
+The result is shown in `Scirius <https://github.com/StamusNetworks/scirius>`_ interface but any data lake understanding JSON will be able to build the
+same type of visualization.
+
+Or for the created and updated date, a nice way to see which recent signatures did fire on the probes like shown on :numref:`signatures-ordered`
+
+.. _signatures-ordered:
+
+.. figure:: img/signatures-ordered.png
+
+   Signatures ordered by creation date in Scirius
 
 

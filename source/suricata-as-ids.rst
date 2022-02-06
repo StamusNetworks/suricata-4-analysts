@@ -7,7 +7,8 @@ Suricata rule language
 Suricata rule language is derived from Snort rule language from 2010 and it has evolved since to become
 a separate language sharing a common root.
 
-
+`Suricata documentation <https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_Rules>`_ is really complete
+with regards to signature language and keywords and is the ultimate reference.
 
 Anatomy of a signature
 ----------------------
