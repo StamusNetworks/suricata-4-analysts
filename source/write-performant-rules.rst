@@ -8,7 +8,7 @@ Suricata detection engine optimizations
 The detection engine optimization challenge
 -------------------------------------------
 
-In demanding enterprise environments, Suricata must opearate at a very high network speeds -- like 40Gbps and 100Gbps -- with the full ETPro ruleset loaded. That ruleset is approximately 60,000 signatures, and in order to keep up with line rate, Suricata must inspect all of them at the rate of 3,333,333 packets per second (for 40Gbps).
+In demanding enterprise environments, Suricata must operate at a very high network speeds -- like 40Gbps and 100Gbps -- with the full ETPro ruleset loaded. That ruleset is approximately 60,000 signatures, and in order to keep up with line rate, Suricata must inspect all of them at the rate of 3,333,333 packets per second (for 40Gbps).
 
 So, at 40Gbps there is a budget of .000000000005 seconds per rule. And in this .005 ns per rule, Suricata must do protocol analysis, content matching and execute a regular expression.
 
@@ -36,7 +36,7 @@ Multi pattern matching
 
 As we can not differentiate on the IP parameters, we need to go higher in the protocol stack to
 do the same thing. But an alert can match on HTTP user agent or can match on file data
-transfered over SMB. And given the complexity of the fields we are matching on we can not do a
+transferred over SMB. And given the complexity of the fields we are matching on we can not do a
 implementation of the tree. But let's take one step back. In all this cases, we are doing
 pattern matching on one buffer (HTTP user agent, file data, ...) and we would have a wonderful
 performance gain if we could have an automatic tree built up for the patterns we are looking for
@@ -63,10 +63,10 @@ that have the HTTP user agent as fast pattern. So the `WinLoaded` content match 
 the MPM phase with all the others match. One pass algorithm to rules them all. If ever there is a match, then
 the signature will be fully evaluated, content will be checked (with starts with modification), the regular
 expression `pcre:"/Winloaded \d\.\d{2}/"` will be verified.
-So if `Winloaded` is a efficient differentiator among the HTTP user agents value, Suricata may have only one single
+So if `Winloaded` is an efficient differentiator among the HTTP user agents value, Suricata may have only one single
 signature to fully evaluate instead of the 60000.
 
-This approach allows Suricata to analyse the full ruleset in a way that is not dependant of the number of
+This approach allows Suricata to analyse the full ruleset in a way that is not dependent of the number of
 signatures if the signature are correctly written and for example we don't have half of them using `Mozilla`
 as fast pattern on the HTTP user agent.
 
