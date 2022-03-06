@@ -14,10 +14,4 @@ Network Threat Hunting with Suricata
    suricata-as-ids
    write-performant-rules
    tls-threat-hunting
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   about
