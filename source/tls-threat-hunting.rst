@@ -247,12 +247,50 @@ Verifying a list of known bad JA3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+.. code-block::
+
+  alert tls $HOME_NET any -> any any (msg:"New internal certificate authority"; \\
+        tls.ja3; dataset:set,bad-ja3, type string, load bad-ja3.lst; \\
+        sid:4; rev:1;)
+
+
+Here we alert as soon a TLS JA3 from the set of known bad JA3 is seen.
+
+
+Build the list of internally used certificate authorities
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In a production environment, it is useful to know what are the TLS certificates authorities
+that are used internally. Suricata can be used to do so by using the dataset keyword:
+
+.. code-block::
+
+  alert tls $HOME_NET any -> any any (msg:"New internal certificate authority"; \\
+        tls.issuerdn; dataset:set,internal-issuers, type string, state internal-issuers.lst, memcap 10Mb, hashsize 100; \\
+        sid:5; rev:1;)
+
+Here we alert as soon a TLS issuer is seen coming from the internal network and has never been seen before.
 
 Hunting on TLS events
 =====================
 
-Self signed certificate
------------------------
+Self signed certificates
+------------------------
+
+Self signed certificates can be detected via signatures. See `this blog post <https://www.stamus-networks.com/blog/2015/07/24/finding-self-signed-tls-certificates-suricata-and-luajit-scripting>`_ by Stamus Networks explaining the process using a lua based
+signature.
+
+This can also be done using the TLS events. If `tls.issuerdn` is equal to `tls.subject` then we have a self signed certificate.
+
+If you have only the EVE JSON file and access to the command line, you can use `jq` to find them ::
+
+  cat eve.json | jq 'select(.event_type=="tls" and .tls.issuerdn==.tls.subject)'
+
+In Splunk, one can simply do ::
+
+ event_type="tls" tls.subjectdn=tls.issuerdn
+
+If your data are in Elasticsearch you can do a search in Kibana:
 
 Unsecure protocol
 -----------------
