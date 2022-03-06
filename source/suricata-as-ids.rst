@@ -10,6 +10,8 @@ a separate language sharing a common root.
 `Suricata documentation <https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_Rules>`_ is really complete
 with regards to signature language and keywords and is the ultimate reference.
 
+.. index:: Signature
+
 Anatomy of a signature
 ----------------------
 
@@ -54,6 +56,7 @@ There are 3 types of matching keywords:
 
 It is recommended to only use sticky buffer keywords in newly written rules.
 
+.. index:: Sticky Buffer
 Sticky buffer keywords
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -66,7 +69,7 @@ In this case, the host field in HTTP header will match ``www`` and ``toto`` (via
 and do a regular expression match to detect the domains. Then there is a switch of context
 to the HTTP method and a match on GET on the method is done.
 
-
+.. index:: Content Modifier
 Content modifiers keywords
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
