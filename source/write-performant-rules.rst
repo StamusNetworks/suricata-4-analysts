@@ -56,14 +56,14 @@ pattern is well chosen, Suricata may just have one single signature to evaluate.
 
 Let's use this signature as example ::
 
-  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;) --PO This rule does not match the paragraph below
+  alert http any any -> any any (msg:"Bad Agent"; http.user_agent; content: "Winhttp"; fast_pattern; startswith; pcre:"/^Winhttp [0-9]+\/[0-9]+/"; sid:1;)
 
 The evaluation of this signature by Suricata will be the following. It will be attached to the set of signatures
-that have the HTTP user agent as fast pattern. So the `WinLoaded` content match will be evaluated during
+that have the HTTP user agent as fast pattern. So the `Winhttp` content match will be evaluated during
 the MPM phase with all the others match. One pass algorithm to rules them all. If ever there is a match, then
 the signature will be fully evaluated, content will be checked (with starts with modification), the regular
-expression `pcre:"/Winloaded \d\.\d{2}/"` will be verified.
-So if `Winloaded` is an efficient differentiator among the HTTP user agents value, Suricata may have only one single
+expression `pcre:"/^Winhttp [0-9]+\/[0-9]+/"` will be verified.
+So if `Winhttp` is an efficient differentiator among the HTTP user agents value, Suricata may have only one single
 signature to fully evaluate instead of the 60000.
 
 This approach allows Suricata to analyse the full ruleset in a way that is not dependent of the number of
