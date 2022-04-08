@@ -290,7 +290,24 @@ In Splunk, one can simply do ::
 
  event_type="tls" tls.subjectdn=tls.issuerdn
 
-If your data are in Elasticsearch you can do a search in Kibana:
+If your data are in Elasticsearch you can do a search in Kibana with DSL filter ::
+
+  {
+    "query": {
+      "bool": {
+        "must": {
+          "script": {
+            "script": {
+              "inline": "if (doc.containsKey('tls.subject.keyword') && (!doc['tls.subject.keyword'].empty)) { return (doc['tls.subject.keyword'] == doc['tls.issuerdn.keyword']) } else { return false }" 
+            }
+          }
+        }
+      }
+    }
+  }
+
+In some cases, you may have to replace `keyword` by `raw` in your search. Uou can access Query DSL filter by clicking `+ Add filter` then `Edit as Query DSL`.
+
 
 Unsecure protocol
 -----------------
