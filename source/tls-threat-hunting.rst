@@ -306,10 +306,25 @@ If your data are in Elasticsearch you can do a search in Kibana with DSL filter 
     }
   }
 
-In some cases, you may have to replace `keyword` by `raw` in your search. Uou can access Query DSL filter by clicking `+ Add filter` then `Edit as Query DSL`.
+In some cases, you may have to replace `keyword` by `raw` in your search. You can access Query DSL filter by clicking `+ Add filter` then `Edit as Query DSL`.
 
 
 Unsecure protocol
 -----------------
 
+Some TLS and SSL versions are considered as unsecure due to design flaws and
+known succesful attacks. It is thus interesting to find any connection
+using this weak policy so any eyes dropping can be prevented. Know unsecure
+versions are all SSL versions and TLS up to 1.1.
+
+It is possible to search this Elasticsearch by using the following filter ::
+
+  tls.version:SSL% OR tls.version:TLSv1 OR tls.version:"TLS 1.1"
+
+In Splunk, this can be written as ::
+
+  event_type=tls AND tls.version IN ("SSLv2", "SSLv3", "TLSv1", "TLS 1.1")
+
+Expired certificates
+--------------------
 
