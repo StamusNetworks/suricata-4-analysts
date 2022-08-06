@@ -328,3 +328,9 @@ In Splunk, this can be written as ::
 Expired certificates
 --------------------
 
+The simplest way to achieve that is to use the `tls_cert_expired` keyword
+in signature ::
+
+  alert tls any any -> any any (msg:"expired certs"; tls_cert_expired; sid:1; rev:1;)
+
+But it is also possible to do this in 
