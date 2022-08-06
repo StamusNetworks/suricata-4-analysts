@@ -333,4 +333,18 @@ in signature ::
 
   alert tls any any -> any any (msg:"expired certs"; tls_cert_expired; sid:1; rev:1;)
 
-But it is also possible to do this in 
+But it is also possible to do this in Splunk ::
+
+ event_type=tls |
+ eval tls_after_date = strptime('tls.notafter',"%Y-%m-%dT%H:%M:%S") |
+ eval event_time = strptime(timestamp,"%Y-%m-%dT%H:%M:%S.%6N%z") |
+ eval validity = tls_after_date - event_time |
+ search validity < 0 |
+ top tls.subject, tls.issuerdn, tls.notafter, timestamp, validity
+
+The complex part consits in parsing the two time stamp we are interested
+in with `strptime` then computing the validity.
+
+.. figure:: img/splunk-expired-tls.png
+
+   Splunk search on expired certificates
