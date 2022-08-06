@@ -1,21 +1,26 @@
-Suricata ecosystems
-===================
+Suricata ecosystem
+==================
+
+Some tools will be used through out the document. They are part of the tooling
+around Suricata.
 
 JQ
 --
 
-JQ is awesome
+`JQ <https://stedolan.github.io/jq/>`_ is a command line tool that allow to format, search and modify JSON object.
 
 Elastic stack
 -------------
 
-Elasticsearch scale
+The `Elastic stack <https://www.elastic.co/>`_ is a set of software that implements a distributed NoSQL database
+(Elasticsearch) with a visualization interface (Kibana) and a log ingestion tool (Logstash). There is a lot of
+other components in the stack that will not be covered here.
 
 Splunk
 ------
 
-So powerful query language
-
+The `Splunk <https://splunk.com>`_ platform is a search, analysis and visualization engine that features
+a really powerful query language.
 
 .. _suricata-ls:
 

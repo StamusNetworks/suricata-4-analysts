@@ -11,9 +11,9 @@ Network Threat Hunting with Suricata
    :caption: Contents:
 
    12years
-   suricata-as-ids
-   write-performant-rules
    tools
    generic-hunting
+   suricata-as-ids
+   write-performant-rules
    tls-threat-hunting
    about
