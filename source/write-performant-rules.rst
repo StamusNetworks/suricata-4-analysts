@@ -376,3 +376,82 @@ Or for the created and updated date, a nice way to see which recent signatures d
    Signatures ordered by creation date in Scirius
 
 
+Fixing warnings from Suricata Language Server
+=============================================
+
+Directionality warning
+----------------------
+
+.. image:: img/directionality-warning.png
+
+The signature ::
+
+ alert tcp any any -> any any (msg:"toto out"; content:"toto"; sid:1; rev:1;)
+
+triggers the following warning: `Rule inspect server and client side, consider adding a flow keyword`
+
+In this signature, the `content` match has no sticky buffer or content modifier attached. As a result,
+the match is done on the TCP stream data. TCP stream has two ways so the inspection will be done
+for all data going to the server and all data going to the client. In most cases, this is not what we
+want to match as we usually know that the pattern should be in a client message or a server message.
+
+So the correct signature is something like ::
+
+  alert tcp any any -> any any (msg:"toto out"; content:"toto"; \\
+            flow:established,to_server; \\
+            sid:1; rev:1;)
+
+By doing this, the inspection will only be done on the packet going to the server. The inspection
+work is thus cut in half as we are just inspecting one way.
+
+Mixed content
+-------------
+
+.. image:: img/mixed-content.png
+
+The signature ::
+
+ alert http any any -> any any (msg:"Doc reader with curl"; \\
+            content:"/rtfm"; \\
+            http.user_agent; content:"curl"; \\
+            sid:2; rev:1;)
+
+triggers the following warning: `Application layer "http2" combined with raw match, consider using a match on application buffer`
+
+In the signature the first match `content:"/rtfm"` is done on TCP stream data as there is no sticky buffer or content modifier associated
+with it. But the second match `http.user_agent; content:"curl";` is done on the HTTP user agent buffer. This setup is not natural as it
+is better to work on one of the HTTP fields for all the matches. If we look at the first match, it is looking like an URL.
+
+So the correct signature is something like ::
+
+ alert http any any -> any any (msg:"Doc reader with curl"; \\
+            http.uri; content:"/rtfm"; \\
+            http.user_agent; content:"curl"; \\
+            sid:2; rev:1;)
+
+
+Missing HTTP keywords
+---------------------
+
+.. image:: img/missing-http.png
+
+The signature ::
+
+ alert http any any -> any any (msg:"Doc reader"; content:"GET /rtfm"; sid:3; rev:1;)
+
+triggers the following warning: `pattern looks like it inspects HTTP, use http.request_line or http.method and http.uri instead for improved performance`
+
+In this signature, we have a single content match that search for 2 words and that really looks like a part of an HTTP request. Suricata
+did detect that and is warning it would be better to use proper HTTP keywords. It will be better for multiple reasons. First, the HTTP
+keywords match on normalized strings and it will improve the resilience of the signature to evasion compare to a simple content match.
+Second reason is that is is far more accurate to use matches on HTTP fields. In this particular case, the signature will alert on any HTTP stream
+that contains `GET /rtfm`. As a consequences, it will for example alert if the signature file is downloaded over HTTP.
+
+So the correct signature is something like ::
+
+ alert http any any -> any any (msg:"Doc reader with curl"; \\
+            http.method; content: "GET"; \\
+            http.uri; content:"/rtfm"; \\
+            sid:2; rev:1;)
+
+We have a match on the HTTP method followed by a match on the URI.
