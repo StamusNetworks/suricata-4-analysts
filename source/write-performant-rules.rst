@@ -382,7 +382,9 @@ Fixing warnings from Suricata Language Server
 Directionality warning
 ----------------------
 
-.. image:: img/directionality-warning.png
+.. figure:: img/directionality-warning.png
+
+   Directionality warning seen in Neovim
 
 The signature ::
 
@@ -407,7 +409,10 @@ work is thus cut in half as we are just inspecting one way.
 Mixed content
 -------------
 
-.. image:: img/mixed-content.png
+.. figure:: img/mixed-content.png
+
+   Mixed content warning seen in Neovim
+
 
 The signature ::
 
@@ -433,7 +438,9 @@ So the correct signature is something like ::
 Missing HTTP keywords
 ---------------------
 
-.. image:: img/missing-http.png
+.. figure:: img/missing-http.png
+
+    Missing HTTP keywords warning seen in Neovim
 
 The signature ::
 
