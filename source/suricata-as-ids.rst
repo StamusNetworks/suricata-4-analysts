@@ -57,6 +57,7 @@ There are 3 types of matching keywords:
 It is recommended to only use sticky buffer keywords in newly written rules.
 
 .. index:: Sticky Buffer
+
 Sticky buffer keywords
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -70,6 +71,7 @@ and do a regular expression match to detect the domains. Then there is a switch 
 to the HTTP method and a match on GET on the method is done.
 
 .. index:: Content Modifier
+
 Content modifiers keywords
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
