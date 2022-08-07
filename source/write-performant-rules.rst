@@ -380,6 +380,9 @@ Or for the created and updated date, a nice way to see which recent signatures d
 Fixing warnings from Suricata Language Server
 =============================================
 
+The :ref:`Suricata Language Server <suricata-ls>` uses Suricata features to display warning and hints in IDE and text editors that support LSP.
+Some of the warnings may appear confusing at first, so let's take a tour to understand them and discover how to fix them.
+
 Directionality warning
 ----------------------
 
