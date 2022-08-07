@@ -90,8 +90,8 @@ If we compare with HTTP, we don't have the user agent field that (even if it is 
 as it allows to identify and classify protocol clients.
 
 `JA3 <https://github.com/salesforce/ja3>`_ was created by John B. Althouse, Jeff Atkinson and Josh Atkins (hence the name of the method) to address this issue. It is based on the fact
-that common implementation will send in the initial message similar negotiation parameters. And by selecting carefully some of this parameters, we can build an identifier that discriminate
-with a fine granularity the implementation. As most clever technique this looks really simple but it has proven to be an really efficient way to fingerprint TLS client.
+that similar implementations will send in the initial message similar negotiation parameters. And by selecting carefully some of this parameters, we can build an identifier that discriminate
+with a fine granularity the implementations. As most clever technique this looks really simple but it has proven to be an really efficient way to fingerprint TLS client.
 Identifying malware traffic with JA3 has proven to be successful even if there is a non zero false positive.
 
 The following example is a Suricata TLS event with JA3 activated.
