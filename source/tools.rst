@@ -16,11 +16,16 @@ The `Elastic stack <https://www.elastic.co/>`_ is a set of software that impleme
 (Elasticsearch) with a visualization interface (Kibana) and a log ingestion tool (Logstash). There is a lot of
 other components in the stack that will not be covered here.
 
+Some useful Kibana dashboards have been published by Stamus Networks on `Github <https://github.com/StamusNetworks/KTS7>`_.
+
 Splunk
 ------
 
 The `Splunk <https://splunk.com>`_ platform is a search, analysis and visualization engine that features
 a really powerful query language.
+
+If you are a Splunk user, you may want to get a look at `Stamus Networks app for Splunk <https://splunkbase.splunk.com/app/5262/>`_
+that provides ready to use dashboards and reports for Suricata and Stamus Networks users.
 
 .. _suricata-ls:
 
