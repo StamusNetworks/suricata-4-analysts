@@ -171,7 +171,7 @@ TLS and Detection
 TLS keywords
 ------------
 
-As usual, it is recommended to use all sticky buffers variant as they are offering more flexbility and better performance.
+As usual, it is recommended to use all sticky buffers variant as they are offering more flexibility and better performance.
 
 There is two classes of keywords, the one matching the TLS certificate information and the one matching on ja3 and ja3s data.
 
@@ -188,7 +188,7 @@ Detecting expired certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Let's get an alert when one of the a server we monitor has an expired certificate
+Let's get an alert when one of the servers we monitor has an expired certificate
 
 .. code-block::
 
@@ -202,7 +202,7 @@ the certificate data we want to check are coming from the servers.
 Checking that internal PKI is used
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The company we work for is running an expensive PKI and we want to be sure it is used for all the services running on our servers.
+The company we work for is running an expensive Public Key Infrastructure (PKI) and we want to be sure it is used for all the services running on our servers.
 If the TLS issuer of our PKI is `C=US, O=My Company`, we can simply use the following signature that leverage the `tls.cert_issuer`
 sticky buffer keyword.
 
@@ -230,7 +230,7 @@ Checking Tactiques, Techniques and Procedure on certificate building
 
 Creating correctly TLS certificates is not the most trivial task and it is the same for attacker. For example,
 some Ursnif campaign have been using certificates where the subject DN was of the form `C=XX, ST=1, L=1, O=1, OU=1, CN=*`. This `XX` and `1`
-are not something expected in regular certificates and it is a mark of the (Tactiques Techniques an Procedures) TTP of the attacker.
+are not something expected in regular certificates and it is a mark of the Tactiques Techniques an Procedures (TTP) of the attacker.
 
 This is something we can detect with a signature:
 
@@ -313,7 +313,7 @@ Unsecure protocol
 -----------------
 
 Some TLS and SSL versions are considered as unsecure due to design flaws and
-known succesful attacks. It is thus interesting to find any connection
+known successful attacks. It is thus interesting to find any connection
 using this weak policy so any eyes dropping can be prevented. Know unsecure
 versions are all SSL versions and TLS up to 1.1.
 
@@ -342,7 +342,7 @@ But it is also possible to do this in Splunk ::
  search validity < 0 |
  top tls.subject, tls.issuerdn, tls.notafter, timestamp, validity
 
-The complex part consits in parsing the two time stamp we are interested
+The complex part consists in parsing the two time stamp we are interested
 in with `strptime` then computing the validity.
 
 .. figure:: img/splunk-expired-tls.png

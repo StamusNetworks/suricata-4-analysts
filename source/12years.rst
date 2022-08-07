@@ -8,7 +8,7 @@ Suricata is an open source intrusion detection (IDS), intrusion prevention (IPS)
 
 The original goal of the Suricata IDS project was to develop an intrusion detection engine based on signatures, similar to its ancestor Snort but with different technological choices. The aim was to build a network IDS that would share the same detection language as Snort and have a strong focus on community. The early technology choices were to implement multi-threading, advanced HTTP support, and a port-independent protocol recognition.
 
-Over the following dozen years or so, the project—made possible thanks to public funding—has continued to evolve. Overseeing the evolution of the platform is the OISF, a non-profit organization created to receive the funds and take care of promoting and organizing Suricata’s growth.
+Over the following dozen years or so, the project—made possible thanks to public funding—has continued to evolve. Overseeing the evolution of the platform is the `OISF <https://https://oisf.net/>`_, a non-profit organization created to receive the funds and take care of promoting and organizing Suricata’s growth.
 
 Most of the funding for the project now comes through private organizations via consortium membership. The foundation and the consortium members play a significant role in advancing the technology, but Suricata development has always been and remains a community undertaking.
 

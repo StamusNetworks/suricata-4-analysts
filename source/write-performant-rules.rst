@@ -147,7 +147,7 @@ For the fast pattern analysis there is ::
 Which confirm the fact that the second rules will trigger an evaluation of the regular expression for all the http request (where there is an http user agent).
 
 Information about the structure of the signature is also available in ``rules.json``. It is less human friendly but follow the evolution of Suricata detection
-engine more closely. This output is for example used by the :ref:`Suricata Language Server <suricata-ls>` to build advanced analysis of the signatues file.
+engine more closely. This output is for example used by the :ref:`Suricata Language Server <suricata-ls>` to build advanced analysis of the signatures file.
 
 Rules profiling
 ---------------
@@ -228,7 +228,8 @@ Matching on IOCs
 ----------------
 
 In a lot of cases, indicator of compromises comes as list of domain, IP, user agent to match
-against the produce data. An already seen approach consists in generating a rule for each IOC.
+against the produce data. An already seen approach consists in generating a rule for each indicators
+of compromise (IOC).
 This will match but the performance impact will be huge.
 
 If you have to match on an IP list, it is better to use the IP reputation system via the `iprep <https://suricata.readthedocs.io/en/latest/rules/ip-reputation-rules.html>`_ keyword

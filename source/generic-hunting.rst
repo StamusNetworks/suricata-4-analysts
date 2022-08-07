@@ -5,7 +5,7 @@ flow_id correlation
 -------------------
 
 Suricata does flow tracking over most TCP/IP protocols. In the case
-of TCP this is a flow is mappping to a TCP session. In the case of UDP,
+of TCP this is a  direct mapping of flows to TCP sessions. In the case of UDP,
 this is done by looking at the IP information (source IP and port and 
 destination IP and port) and applying a timeout logic.
 
