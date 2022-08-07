@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Network Threat Hunting with Suricata'
-copyright = '2021, Stamus Networks'
-author = 'E. Leblond, P. Manev'
+copyright = '2021-2022, Stamus Networks'
+author = 'E. Leblond'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.2'
 
 
 # -- General configuration ---------------------------------------------------
