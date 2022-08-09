@@ -10,7 +10,7 @@ Network Threat Hunting with Suricata
    :maxdepth: 2
    :caption: Contents:
 
-   12years
+   intro
    tools
    generic-hunting
    suricata-as-ids
