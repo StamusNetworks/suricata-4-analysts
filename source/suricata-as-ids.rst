@@ -116,6 +116,3 @@ And a full export of the keywords in CSV format can be generated with ::
  rev;set version of the rule;Unset;none;https://suricata.readthedocs.io/en/latest/rules/meta.html#rev-revision;
  classtype;information about the classification of rules and alerts;Unset;none;https://suricata.readthedocs.io/en/latest/rules/meta.html#classtype;
 
-
-
-

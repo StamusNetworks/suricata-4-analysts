@@ -14,6 +14,7 @@ Network Threat Hunting with Suricata
    tools
    generic-hunting
    suricata-as-ids
+   practical-rules-writing
    write-performant-rules
    tls-threat-hunting
    about
