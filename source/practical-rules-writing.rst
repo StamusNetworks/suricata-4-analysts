@@ -84,6 +84,10 @@ In most cases, it will be good enough to get an idea of what should be matched o
 As the data are coming from Suricata itself, the string will be exactly what to use
 in the signaure.
 
+If you need more inspection, you can use `Wireshark <https://www.wireshark.org/>`_ to do so.
+You can by the way see Suricata data in Wireshark
+by using `Suriwire <https://github.com/regit/suriwire>`_.
+
 Write your signature
 ~~~~~~~~~~~~~~~~~~~~
 
