@@ -1,8 +1,51 @@
 Generic Threat Hunting
 ======================
 
-flow_id correlation
--------------------
+Threat Hunting with IDS and NSM data
+------------------------------------
+
+Suricata is both an IDS and an NSM tools. It will extract and generate protocol transaction
+log independently of alerts. As such, the threat hunter has to find the type of events where getting
+result on the data is making the more sense.
+
+Let's take two examples of Indicator Of Compromise (IOC):
+
+- a SMB user name created by a threat actor when he has taken control of an Active Directory. Let's say this username is `pandabear`.
+- a domain that is a not so commonly used cloud provider. Let's say the domain is `sovereigncloud.eu`
+
+What is common to both IOC is that first thing to do is to query the
+NSM data to see if this IOC have been seen in the network.
+
+For `pandabear` we can do two queries (using Splunk syntax), one to match in the SMB logs and the other one
+in the Kerberos logs:
+
+ - `event_type=smb AND smb.ntlmssp.user=pandabear`
+ - `event_type=krb5 AND krb5.cname=pandabear`
+
+For the domain, we can do queries on DNS (looking for the query), TLS (one Server Name Indication) and HTTP (looking for the hostname):
+
+ - `event_type=dns AND dns.query.rrname=sovereigncloud.eu`
+ - `event_type=tls AND tls.sni=sovereigncloud.eu`
+ - `event_type=http AND http.host=sovereigncloud.eu`
+
+In the first case, we are really in trouble if ever the IOC is seen in the organization as the stage of the compromise is advanced
+and because `pandabear` is not likely a regular user. In the second, seeing the IOC is just
+an indicator as we can have users of this cloud provider and we may need to discriminate among them by doing more investigation.
+
+So for the domain, a regular check in the NSM data may be enough but for the username we may want to switch faster to
+incident response. Adding IDS signatures to detect this username if ever it appears may then be a good solution ::
+
+ alert smb any any -> $HOME_NET any (msg:"pandabear"; smb.ntlmssp_user; content:"pandabear"; ...
+ alert krb5 any any -> $HOME_NET any (msg:"pandabear"; krb5.cname; content:"pandabear"; ...
+
+Please note that the first signature will require Suricata 7.0 and that dataset is a far better way to match IOCs with Suricata signatures.
+
+To summarize this example, because Suricata is both an IDS and an NSM, there is multiple complementary approach
+when doing threat hunting with Suricata.
+
+
+Correlation using flow_id
+-------------------------
 
 Suricata does flow tracking over most TCP/IP protocols. In the case
 of TCP this is a  direct mapping of flows to TCP sessions. In the case of UDP,
