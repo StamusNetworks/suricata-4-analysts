@@ -1,3 +1,5 @@
+.. _performant-rules:
+
 =================================
 Writing performant Suricata rules
 =================================

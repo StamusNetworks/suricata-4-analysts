@@ -23,6 +23,10 @@ To replay the pcap, you can use something like (create data directory first) ::
 
 if your signature ID is 1000000.
 
+The 1000000-1999999 range is reserved for internal usage, so it is a good choice.
+Contact the `Sid Allocation project <https://sidallocation.org/>`_ if you want
+to publish your rules publicly.
+
 Replay with only your rules file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -38,8 +42,8 @@ With this option, the testing process becomes ::
  cat eve.json | jq 'select(.event_type=="alert")'
 
 
-Add IP filtering later
-~~~~~~~~~~~~~~~~~~~~~~
+Add IP filtering in later stage
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It is better to write a signature starting with `any any -> any any` then add a filtering like
 `$HOME_NET any -> $EXTERNAL_NET any`. The source and destination IP depends of the signature
@@ -51,4 +55,61 @@ that and not because of a complex regular expression you did add in the signatur
 Writing a rules step by step
 ----------------------------
 
+The following is a suggestion of method you can use when writing signatures.
 
+Get a pcap file
+~~~~~~~~~~~~~~~
+
+First step is to get a PCAP file with the content you want. Don't hesitate to filter out things in the pcap.
+For example, if you want to match on a single flow you can do something like ::
+
+ tcpdump -r input.pcap -w work.pcap port 53535 and port 443
+
+where 53535 and 443 are the source and destination ports of the flow you want to match
+on. You can also add a few `host` filters in the BPF if the previous command did return
+more than one flow.
+
+Now we can use the file `work.pcap` for our tests.
+
+Run the file inside Suricata
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By running Suricata without any rules on the file we will extract all the metadata has seen by Suricata ::
+
+ rm data/eve.json
+ suricata -r ./trace.pcap -l data/ -S /dev/null
+ # explose data/eve.json
+
+In most cases, it will be good enough to get an idea of what should be matched on.
+As the data are coming from Suricata itself, the string will be exactly what to use
+in the signaure.
+
+Write your signature
+~~~~~~~~~~~~~~~~~~~~
+
+We higly recommend to use a text editor supported by the :ref:`Suricata Language Server <suricata-ls>`  for the edition
+as it will allow to fix error fast and get auto completion. During the writing phase, this is easier to have a file
+containing a single signature.
+
+We can then test if the rule is alerting by running ::
+
+ rm data/eve.json
+ suricata -r ./trace.pcap -l data/ -S my.rules -v
+ cat eve.json | jq 'select(.event_type=="alert")'
+
+The last command may not even be necessary as by adding `-v` we will have the number of alerts at the end of the output ::
+
+ [9093] 9/8/2022 -- 23:50:47 - (counters.c:871) <Info> (StatsLogSummary) -- Alerts: 1
+
+As mentioned before, the easiest approach is to get an iterative approach here:
+
+ - Start with a simple content match on one of the sticky buffer keywords
+ - Add some more contents match if needed
+ - complete with a regular expression if needed
+ - set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
+ - add the metadata keyword for more usable data
+
+Between each steps, run suricata to verify that your output is correct.
+
+See the chapter :ref:`Write performant Suricata rules <performant-rules>` for more details and explanation on the steps described
+above.
