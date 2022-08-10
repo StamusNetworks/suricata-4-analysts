@@ -115,5 +115,22 @@ As mentioned before, the easiest approach is to get an iterative approach here:
 
 Between each steps, run suricata to verify that your output is correct.
 
+
+Performance Improvement process
+-------------------------------
+
+**NOTE:** Use the most unique fields as `fast_pattern`.
+
+Steps for performance improvements involve running Suricata through relevant and non relevant pcaps while having the `rule-profiling` enabled.
+The recommended process is:  
+
+ 1 - Run Suricata with `--engine analysis`. Example: `suricata -S my.rules --engine-analisys -l /va/log/suricata/`. Check the results and recommendations or warning in `/var/log/suricata/rules_analysis.txt` 
+ 2 - Write variations of the rule.
+ 3 - Use a pcap with relevant traffic
+ 4 - Run the pcap and the rules with suricata that has rules profiling enabled. A relevant section in the suricata `suricata.yaml` config can be used to adjust sorting or to enable text and JSON outputs. Review the results in `/var/log/suricata/rule_perf.log` and make further adjustments as needed. Repeat that step a few times if needed.
+ 5 - Use a pcap with non relevant traffic.
+ 6 - Run with rules profiling, review the results.
+ 7 - Putting it all together: The winner rule is the one with lowest perf hit on the relevant traffic and ideally not appearing (aka not being evaluated at all) in the non relevant traffic pcap run.
+
 See the chapter :ref:`Write performant Suricata rules <performant-rules>` for more details and explanation on the steps described
 above.
