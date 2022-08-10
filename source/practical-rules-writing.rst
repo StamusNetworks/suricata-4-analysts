@@ -88,6 +88,8 @@ If you need more inspection, you can use `Wireshark <https://www.wireshark.org/>
 You can also see Suricata data in Wireshark
 by using `Suriwire <https://github.com/regit/suriwire>`_.
 
+.. _write-signature:
+
 Write your signature
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -105,13 +107,19 @@ The last command may not even be necessary as by adding `-v` we will have the nu
 
  [9093] 9/8/2022 -- 23:50:47 - (counters.c:871) <Info> (StatsLogSummary) -- Alerts: 1
 
+If you are not using the :ref:`Suricata Language Server <suricata-ls>`, you need to an engine analysis with Suricata
+to get warnings and performance hints on the signature ::
+
+ suricata --engine-analysis -l data/ -S my.rules -v
+ cat data/rules_analysis.txt
+
 As mentioned before, the easiest approach is to get an iterative approach here:
 
- - Start with a simple content match on one of the sticky buffer keywords
- - Add some more contents match if needed
- - complete with a regular expression if needed
- - set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
- - add the metadata keyword for more usable data
+- Start with a simple content match on one of the sticky buffer keywords
+- Add some more contents match if needed
+- complete with a regular expression if needed
+- set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
+- add the metadata keyword for more usable data
 
 Between each steps, run suricata to verify that your output is correct.
 

@@ -151,6 +151,8 @@ Which confirm the fact that the second rules will trigger an evaluation of the r
 Information about the structure of the signature is also available in ``rules.json``. It is less human friendly but follow the evolution of Suricata detection
 engine more closely. This output is for example used by the :ref:`Suricata Language Server <suricata-ls>` to build advanced analysis of the signatures file.
 
+.. _profiling-info:
+
 Rules profiling
 ---------------
 
@@ -159,8 +161,8 @@ really nice to see the impact on a real run. To do so, there is a profiling syst
 that need to be activated during the build and can be setup in the configuration.
 
 To build it you need to add ``--enable-profiling`` to the ``./configure`` command line. Suricata
-performance will be impacted but you will have a ``rule_perf.log`` file in your log directory with performance
-information - PO Should we mention that this parameter should only be done for testing and not in production?
+performance will be impacted  and this should not be sued in production but you will have a ``rule_perf.log`` file in your log directory with performance
+information.
 
 .. code-block:: JSON
 
@@ -203,6 +205,11 @@ as we evaluate the regular expression for all HTTP requests. An interesting poin
 the MPM algorithm simply skip the evaluation of the rules and hence its cost is null. And with the incorrect signature
 we can see that the cost is 1281 ticks for every match attempt. And we have 4 ``checks`` for the signature 1 and
 1628 for the signature 2. Hence, the performance ratio.
+
+A perfect signature should have zero in `ticks_avg_nomatch` and should have a really low `ticks_avg_match`. The first
+point being the most important as it means the multi pattern matching on the signature is 
+not triggering when the signature is not matching. This will be the case when the pattern used in MPM is discriminative enough
+and that no other signatures are using it.
 
 Guideline for performant rules
 ==============================
@@ -474,17 +481,24 @@ We have a match on the HTTP method followed by a match on the URI.
 Performance Improvement process
 ===============================
 
-**NOTE:** Use the most unique fields as `fast_pattern`.
+To validate the performance of a rule, it needs to be run and evaluated over relevant and non relevant pcaps so the impact
+of the rule can be seen on all types of traffic. To do so you need to run the rule through both types of pcaps while having the `rule-profiling` enabled.
 
-Steps for performance improvements involve running Suricata through relevant and non relevant pcaps while having the `rule-profiling` enabled.
-The recommended process is:  
+The signature needs to be complete (See steps in :ref:`Signature writing process <write-signature>`) before you can
+test its performance.
 
- 1 - Run Suricata with `--engine analysis`. Example: `suricata -S my.rules --engine-analisys -l /va/log/suricata/`. Check the results and recommendations or warning in `/var/log/suricata/rules_analysis.txt` 
- 2 - Write variations of the rule.
- 3 - Use a pcap with relevant traffic
- 4 - Run the pcap and the rules with suricata that has rules profiling enabled. A relevant section in the suricata `suricata.yaml` config can be used to adjust sorting or to enable text and JSON outputs. Review the results in `/var/log/suricata/rule_perf.log` and make further adjustments as needed. Repeat that step a few times if needed.
- 5 - Use a pcap with non relevant traffic.
- 6 - Run with rules profiling, review the results.
- 7 - Putting it all together: The winner rule is the one with lowest perf hit on the relevant traffic and ideally not appearing (aka not being evaluated at all) in the non relevant traffic pcap run.
+
+#. Verify the rule syntax with Suricata Language Server or run Suricata with `--engine-analysis`
+#. Use a pcap with relevant traffic
+
+   - Run the pcap and the rules with suricata that has rules profiling enabled. A relevant section in the suricata `suricata.yaml` config can be used to adjust sorting or to enable text and JSON outputs
+   - Review the results in `rule_perf.log` and make further adjustments as needed. See :ref:`Profile information <profiling-info>` for details
+
+#. Use a pcap with non relevant traffic.
+
+   - Run with rules profiling
+   - Review the results
+
+The winner rule is the one with lowest perf hit on the relevant traffic and ideally not appearing (aka not being evaluated at all) in the non relevant traffic pcap run.
 
 
