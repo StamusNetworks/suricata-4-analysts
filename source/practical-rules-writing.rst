@@ -53,7 +53,7 @@ that and not because of a complex regular expression you did add in the signatur
 
 
 Writing a rule - step by step
-----------------------------
+-----------------------------
 
 The following is a suggestion for a process to use when writing signatures:
 
