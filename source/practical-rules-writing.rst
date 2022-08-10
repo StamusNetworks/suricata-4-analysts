@@ -1,19 +1,19 @@
-Practical rules writing
+Practical rule writing
 =======================
 
 Methodology
 -----------
 
-There is a few methods that greatly improves the rules writing experience.
+There are a few techniques that greatly improve the rule writing experience.
 
 Use a PCAP file
 ~~~~~~~~~~~~~~~
 
-Writing a rule is an iterative process so it is really easier to work using a PCAP
-file instead of doing it on live traffic.
+Writing a rule is an iterative process, so it is easier to write the rule using a PCAP
+file that can be replayed multiple times instead of doing it on live traffic.
 
-So try to capture a PCAP trace of the behavior you want to inspect, then
-you can replay it as soon as your signature needs to be tested.
+So, try to capture a PCAP trace of the behavior you want to inspect, then
+you can replay it when your signature needs to be tested.
 
 To replay the pcap, you can use something like (create data directory first) ::
 
@@ -30,9 +30,9 @@ to publish your rules publicly.
 Replay with only your rules file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To speed up the writing of a rule, you need tests to be fast. The -S flag is here to help
-as Suricata will only load the rules in the file provided after the option. As a result, the run
-will be a few seconds instead of 30 seconds or more if Suricata needs to build a complete
+To speed up the writing of a rule, you need tests to be fast. The -S flag is here to help.
+Suricata will only load the rules in the file provided after the option. As a result, the run
+will take only a few seconds instead of 30 seconds or more if Suricata needs to build a complete
 detection engine.
 
 With this option, the testing process becomes ::
@@ -48,25 +48,25 @@ Add IP filtering in later stage
 It is better to write a signature starting with `any any -> any any` then add a filtering like
 `$HOME_NET any -> $EXTERNAL_NET any`. The source and destination IP depends of the signature
 and the HOME_NET may not be correctly defined with regards to the data in the PCAP file.
-Result is that the signature may just not match because of
+The result is that the signature may just not match because of 
 that and not because of a complex regular expression you did add in the signature.
 
 
-Writing a rules step by step
+Writing a rule - step by step
 ----------------------------
 
-The following is a suggestion of method you can use when writing signatures.
+The following is a suggestion for a process to use when writing signatures:
 
 Get a pcap file
 ~~~~~~~~~~~~~~~
 
-First step is to get a PCAP file with the content you want. Don't hesitate to filter out things in the pcap.
+First step is to get a PCAP file with the content you want to trigger the rule. Don't hesitate to filter out things in the pcap.
 For example, if you want to match on a single flow you can do something like ::
 
  tcpdump -r input.pcap -w work.pcap port 53535 and port 443
 
 where 53535 and 443 are the source and destination ports of the flow you want to match
-on. You can also add a few `host` filters in the BPF if the previous command did return
+on. You can also add a few `host` filters in the BPF if the previous command returned
 more than one flow.
 
 Now we can use the file `work.pcap` for our tests.
@@ -74,25 +74,25 @@ Now we can use the file `work.pcap` for our tests.
 Run the file inside Suricata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By running Suricata without any rules on the file we will extract all the metadata has seen by Suricata ::
+By running Suricata without any rules on the file, we can extract all the metadata seen by Suricata ::
 
  rm data/eve.json
  suricata -r ./trace.pcap -l data/ -S /dev/null
  # explose data/eve.json
 
-In most cases, it will be good enough to get an idea of what should be matched on.
-As the data are coming from Suricata itself, the string will be exactly what to use
+In most cases, it will be good enough to get an idea of what fields we should matched on.
+As the data are coming from Suricata itself, the string will be exactly what we should use
 in the signaure.
 
 If you need more inspection, you can use `Wireshark <https://www.wireshark.org/>`_ to do so.
-You can by the way see Suricata data in Wireshark
+You can also see Suricata data in Wireshark
 by using `Suriwire <https://github.com/regit/suriwire>`_.
 
 Write your signature
 ~~~~~~~~~~~~~~~~~~~~
 
-We higly recommend to use a text editor supported by the :ref:`Suricata Language Server <suricata-ls>`  for the edition
-as it will allow to fix error fast and get auto completion. During the writing phase, this is easier to have a file
+We higly recommend using a text editor supported by the :ref:`Suricata Language Server <suricata-ls>` for the editing. 
+Using the editor with the Suricata Language Server extension allows you to easily identify errors and take advantage of auto-completion. During the writing phase, this is easier to have a file
 containing a single signature.
 
 We can then test if the rule is alerting by running ::
