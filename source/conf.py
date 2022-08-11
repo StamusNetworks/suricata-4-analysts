@@ -55,3 +55,5 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 numfig = True
+
+latex_show_urls = 'footnote'
