@@ -81,6 +81,8 @@ in fact the host name requested by the client. This is sent by client in the fir
 For example, in this case, we have the ``tls.subject`` equals to ``"C=US, ST=California, L=Mountain View, O=Google LLC, CN=*.gstatic.com"``
 which means because of the ``CN`` field that the certificate can serve any site that matches ``*.gstatic.com``. So we have some supplementary information thanks to the TLS SNI.
 
+.. index:: TLS JA3
+
 TLS JA3
 -------
 
@@ -143,6 +145,8 @@ It is composed of 2 fields, a string that is build by concatenating a predefined
 And this hash has been linked to `Trickbot <https://twitter.com/4a4133/status/1043246635239854081?lang=en>`_ by John B. Althouse. So just using this information is enough
 to identify a potential malware. And even if the server infrastructure is composed of multiple services and evolves, the JA3 of the client will stay the same as the
 data are based on client first message that can not be influenced by the server.
+
+.. index:: TLS JA3S
 
 TLS JA3s
 --------

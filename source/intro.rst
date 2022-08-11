@@ -1,6 +1,8 @@
 Introduction to Suricata
 ========================
 
+.. index:: Suricata
+
 An Open Source Network Threat Detection engine
 ----------------------------------------------
 

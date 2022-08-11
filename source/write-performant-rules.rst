@@ -33,6 +33,8 @@ about the fact that everything in their network is HTTP or TLS. And thus they ha
 Something else is needed.
 
 
+.. index:: Multi Pattern Matching
+
 Multi pattern matching
 ----------------------
 
@@ -78,6 +80,8 @@ Testing performance and correctness of written rules
 
 Suricata is here to help you write correct rules and there is a set of tools
 provided to do that.
+
+.. index:: Engine analysis
 
 Engine analysis
 ---------------
@@ -152,6 +156,8 @@ Information about the structure of the signature is also available in ``rules.js
 engine more closely. This output is for example used by the :ref:`Suricata Language Server <suricata-ls>` to build advanced analysis of the signatures file.
 
 .. _profiling-info:
+
+.. index:: Rules profiling
 
 Rules profiling
 ---------------

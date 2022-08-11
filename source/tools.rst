@@ -27,6 +27,9 @@ a really powerful query language.
 If you are a Splunk user, you may want to get a look at `Stamus Networks app for Splunk <https://splunkbase.splunk.com/app/5262/>`_
 that provides ready to use dashboards and reports for Suricata and Stamus Networks users.
 
+
+.. index:: Suricata Language Server
+
 .. _suricata-ls:
 
 Suricata Language Server
