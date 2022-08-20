@@ -57,3 +57,11 @@ html_static_path = ['_static']
 numfig = True
 
 latex_show_urls = 'footnote'
+
+latex_elements = {
+    'pointsize': '10pt',
+}
+
+#latex_additional_files = ["stamus.sty"]
+
+latex_logo = "img/stamus-logo.png"
