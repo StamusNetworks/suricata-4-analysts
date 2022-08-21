@@ -71,6 +71,8 @@ We have only three events here:
  - a file information event (analysis of the data of the transferred file)
  - a flow entry containing the packets and bytes accounting as well as the duration of the flow
 
+The flow event is generated once the flow is timeouted by Suricata.
+
 Some flows can have much more events if the protocol (like SMB) is doing a lot of transactions
 on a single flow.
  
