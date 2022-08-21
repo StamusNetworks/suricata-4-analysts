@@ -12,7 +12,7 @@ The detection engine optimization challenge
 
 In demanding enterprise environments, Suricata must operate at a very high network speeds -- like 40Gbps and 100Gbps -- with the full ETPro ruleset loaded. That ruleset is approximately 60,000 signatures, and in order to keep up with line rate, Suricata must inspect all of them at the rate of 3,333,333 packets per second (for 40Gbps).
 
-So, at 40Gbps there is a budget of .000000000005 seconds per rule. And in this .005 ns per rule, Suricata must do protocol analysis, content matching and execute a regular expression.
+So, at 40Gbps there is a budget of .000000000005 seconds per rule. And in this .005 ns per rule, Suricata must do protocol analysis, content matching and execute regular expressions.
 
 In a typical 3GHz CPU, we have a CPU cycle of 3 ns. So using a brute force approach in the detection engine is 3 orders of magnitude too little, even if a test takes only a single cycle.
 
@@ -487,7 +487,24 @@ We have a match on the HTTP method followed by a match on the URI.
 Performance Improvement process
 ===============================
 
-To validate the performance of a rule, it needs to be run and evaluated over relevant and non relevant pcaps so the impact
+There is always multiple ways to write a rule, variants depend on what you are going to match and on what methods are used for the
+matching. For example, the two following rules may match the same way on a sample but could have different performance: ::
+
+ alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"Test - Rule variant - 1"; \\
+            flow:established,to_server; \\
+            http.method; content:"GET"; http.uri; \\
+            content:"lookforthis"; \\
+            classtype:command-and-control; sid:1000002; rev:1; \\
+            metadata:created_at 2022_08_10, updated_at 2022_08_10;)
+ 
+ alert http $HOME_NET any -> $EXTERNAL_NET any (msg:"Test - Rule variant - 2"; \\
+            flow:established,to_server; urilen:25; \\
+            http.method; content:"GET"; http.uri; \\
+            content:"lookforthis"; http.cookie; content:"lookforthat"; \\
+            classtype:command-and-control; sid:1000003; rev:1; \\
+            metadata:created_at 2022_08_10, updated_at 2022_08_10;)
+
+To validate the performance of a rule and select the good one, it needs to be run and evaluated over relevant and non relevant pcaps so the impact
 of the rule can be seen on all types of traffic. To do so you need to run the rule through both types of pcaps while having the `rule-profiling` enabled.
 
 The signature needs to be complete (See steps in :ref:`Signature writing process <write-signature>`) before you can
