@@ -26,7 +26,7 @@ This was added in version 1.2, along with file checksum computation and file tra
 Note: extraction of files using SMTP protocol was contributed by BAE Systems in Suricata 2.1.
 
 
-Suricata 0.3 (July 2012) - Transport Layer Security (TLS)
+Suricata 1.3 (July 2012) - Transport Layer Security (TLS)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In July 2012, Suricata 1.3 was released and with it came support for TLS -- contributed by Pierre Chifflier working for ANSSI, the French agency responsible for cyberdefense. This TLS implementation does not include decryption but is instead an analysis of the TLS handshake with extraction of unique transaction characteristics such as certificate subject, issuer, and its fingerprint.
