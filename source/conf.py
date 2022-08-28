@@ -73,18 +73,24 @@ latex_elements = {
 \begin{minipage}{12cm}
 \textcolor{yellow}{
 \textbf{
-\begin{spacing}{1.1}
-\fontsize{50}{60}\selectfont \@title
+\begin{spacing}{1.2}
+\fontsize{45}{55}\selectfont \@title
 \end{spacing}
 }
 }
 
-\vspace{0.3cm}
+\vspace{0.4cm}
 \textcolor{white}
 {
 \LARGE{by \@author}
 }
 \end{minipage}
+\par
+\vspace*{\fill}
+\hspace*{-1.1cm}
+\textcolor{white}{
+\py@release \releaseinfo
+}
 \end{titlepage}
 \AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
 \makeatother
