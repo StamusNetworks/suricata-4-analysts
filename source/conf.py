@@ -60,8 +60,16 @@ latex_show_urls = 'footnote'
 
 latex_elements = {
     'pointsize': '10pt',
+    'preamble': r'''
+\usepackage{stamus}
+''',
+    'maketitle': r'''
+\AddToShipoutPictureBG*{\BackgroundPic}
+\sphinxmaketitle
+\AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
+'''
 }
 
-#latex_additional_files = ["stamus.sty"]
+latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg"]
 
 latex_logo = "img/stamus-logo.png"

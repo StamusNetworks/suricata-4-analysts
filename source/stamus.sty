@@ -1,0 +1,13 @@
+\usepackage{transparent}
+\usepackage{eso-pic}
+%\AddToShipoutPictureBG{\includegraphics[width=\paperwidth,height=\paperheight]{stamus-logo.png}}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,%
+keepaspectratio]{stamus-logo.png}%
+\vfill
+}}} 
+
