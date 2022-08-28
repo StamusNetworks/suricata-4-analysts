@@ -19,7 +19,7 @@
 
 project = 'Network Threat Hunting with Suricata'
 copyright = '2021-2022, Stamus Networks'
-author = 'E. Leblond and P. Manev'
+author = 'Eric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
 release = '0.2'
@@ -64,12 +64,33 @@ latex_elements = {
 \usepackage{stamus}
 ''',
     'maketitle': r'''
+\makeatletter
+\begin{titlepage}
 \AddToShipoutPictureBG*{\BackgroundPic}
-\sphinxmaketitle
+\py@HeaderFamily
+\vspace*{2.5cm}
+\hspace*{-1.1cm}
+\begin{minipage}{12cm}
+\textcolor{yellow}{
+\textbf{
+\begin{spacing}{1.1}
+\fontsize{50}{60}\selectfont \@title
+\end{spacing}
+}
+}
+
+\vspace{0.3cm}
+\textcolor{white}
+{
+\LARGE{by \@author}
+}
+\end{minipage}
+\end{titlepage}
 \AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
+\makeatother
 '''
 }
 
-latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg"]
+latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg"]
 
 latex_logo = "img/stamus-logo.png"
