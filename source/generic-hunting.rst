@@ -55,6 +55,8 @@ destination IP and port) and applying a timeout logic.
 So a flow tracks what is happening on a communication between a client and
 a server.
 
+.. index:: flow_id
+
 All IP events contain a `flow_id` key that is the same for all events in a single flow.
 This allow to group all events 
 
@@ -76,3 +78,22 @@ The flow event is generated once the flow is timeouted by Suricata.
 Some flows can have much more events if the protocol (like SMB) is doing a lot of transactions
 on a single flow.
  
+Learning datasets
+-----------------
+
+At first look, the `dataset <https://suricata.readthedocs.io/en/latest/rules/datasets.html>`_ feature belongs to the IDS world (see :ref:`dataset-ioc` for example) as it
+provides matching on a list of elements. But `dataset` can be enriched from the packet path and this
+means it can be used to store first seen of metadata.
+
+For example, to collect all internal HTTP user agents ::
+
+  alert $HOME_NET any -> any any (msg:"new agent"; http.user_agent; \\
+    dataset:isset,http-ua,type string, state /var/lib/http-ua.lst; \\
+
+Everytime Suricata will detect a HTTP user agent that has never been seen on the network by Suricata, it will trigger
+an alert. These events can be used to build a list of first seen items for all the field that can be matched
+with a sticky buffer.
+
+In our signature, the file `/var/list/http-ua.lst` is used to store the state. Suricata will dump the content
+of the list it did build into memory to the file (as a base64 string in our case). This ensures that
+in case of Suricata restart, no new events will be generated.

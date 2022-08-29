@@ -239,6 +239,8 @@ Pre filter all the things
 This is just a reformulation of the previous exigence. Even, if the real match is a nasty regular expression,
 you need to find the longest string possible with a efficient differentiator capability.
 
+.. _dataset-ioc:
+
 Matching on IOCs
 ----------------
 
