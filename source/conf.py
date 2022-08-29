@@ -73,6 +73,7 @@ latex_elements = {
 \begin{minipage}{12cm}
 \textcolor{yellow}{
 \textbf{
+\raggedright
 \begin{spacing}{1.2}
 \fontsize{45}{55}\selectfont \@title
 \end{spacing}
