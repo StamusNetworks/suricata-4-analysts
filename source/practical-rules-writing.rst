@@ -121,7 +121,7 @@ As mentioned before, the easiest approach is to get an iterative approach here:
 - set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
 - add the metadata keyword for more usable data
 
-Between each steps, run iSuricata to verify that your output is correct.
+Between each steps, run Suricata to verify that your output is correct.
 
 See the chapter :ref:`Write performant Suricata rules <performant-rules>` for more details and explanation on the steps described
 above and especially the :ref:`Performance improvement process <rules-perfomance-improvement>` section.
