@@ -94,9 +94,19 @@ latex_elements = {
 \end{titlepage}
 \AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
 \makeatother
-'''
+''',
+    'atendofbody': r'''
+\renewcommand{\indexname}{Index}
+\printindex
+\clearpage
+\AddToShipoutPictureFG*{\BackCoverPic}
+\vspace*{10cm}
+    ''',
+    'printindex': r'''
+\par{}
+    '''
 }
 
-latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg"]
+latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg", "img/stamus-backcover.jpg"]
 
 latex_logo = "img/stamus-logo.png"
