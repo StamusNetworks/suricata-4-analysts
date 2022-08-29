@@ -1,0 +1,8 @@
+pdf:
+  image: sphinxdoc/sphinx-latexpdf
+  script:
+  - make latexpdf
+  artifacts:
+    expire_in: 2 week
+    paths:
+      - "build/latex/*pdf"
