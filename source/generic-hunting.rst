@@ -90,7 +90,7 @@ For example, to collect all internal HTTP user agents ::
   alert $HOME_NET any -> any any (msg:"new agent"; http.user_agent; \\
     dataset:isset,http-ua,type string, state /var/lib/http-ua.lst; \\
 
-Everytime Suricata will detect a HTTP user agent that has never been seen on the network by Suricata, it will trigger
+Every time Suricata will detect a HTTP user agent that has never been seen on the network by Suricata, it will trigger
 an alert. These events can be used to build a list of first seen items for all the field that can be matched
 with a sticky buffer.
 

@@ -524,6 +524,6 @@ test its performance.
    - Run with rules profiling
    - Review the results
 
-The winner rule is the one with lowest perf hit on the relevant traffic and ideally not appearing (aka not being evaluated at all) in the non relevant traffic pcap run.
+The winner rule is the one with lowest performance hit on the relevant traffic and ideally not appearing (aka not being evaluated at all) in the non relevant traffic pcap run.
 
 

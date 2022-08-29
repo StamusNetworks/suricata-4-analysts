@@ -82,7 +82,7 @@ By running Suricata without any rules on the file, we can extract all the metada
 
 In most cases, it will be good enough to get an idea of what fields we should matched on.
 As the data are coming from Suricata itself, the string will be exactly what we should use
-in the signaure.
+in the signature.
 
 If you need more inspection, you can use `Wireshark <https://www.wireshark.org/>`_ to do so.
 You can also see Suricata data in Wireshark
@@ -93,7 +93,7 @@ by using `Suriwire <https://github.com/regit/suriwire>`_.
 Write your signature
 ~~~~~~~~~~~~~~~~~~~~
 
-We higly recommend using a text editor supported by the :ref:`Suricata Language Server <suricata-ls>` for the editing. 
+We highly recommend using a text editor supported by the :ref:`Suricata Language Server <suricata-ls>` for the editing.
 Using the editor with the Suricata Language Server extension allows you to easily identify errors and take advantage of auto-completion. During the writing phase, this is easier to have a file
 containing a single signature.
 
@@ -121,7 +121,7 @@ As mentioned before, the easiest approach is to get an iterative approach here:
 - set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
 - add the metadata keyword for more usable data
 
-Between each steps, run suricata to verify that your output is correct.
+Between each steps, run iSuricata to verify that your output is correct.
 
 See the chapter :ref:`Write performant Suricata rules <performant-rules>` for more details and explanation on the steps described
 above and especially the :ref:`Performance improvement process <rules-perfomance-improvement>` section.
