@@ -149,9 +149,9 @@ United States
 \\
 \end{tabular}
 \begin{center}
-Mail: contact@stamus-networks.com
+Mail: \href{mailto:contact@stamus-networks.com}{\textcolor{white}{contact@stamus-networks.com}}
 
-Web: www.stamus-networks.com
+Web: \href{https://www.stamus-networks.com}{\textcolor{white}{www.stamus-networks.com}}
 \end{center}
 }
 \end{minipage}
