@@ -95,15 +95,65 @@ latex_elements = {
 \AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
 \makeatother
 ''',
-    'atendofbody': r'''
+    'printindex': r'''
 \renewcommand{\indexname}{Index}
 \printindex
-\clearpage
-\AddToShipoutPictureFG*{\BackCoverPic}
-\vspace*{10cm}
-    ''',
-    'printindex': r'''
-\par{}
+\cleartoleftpage
+\pagestyle{empty}
+\newgeometry{bottom=0.8cm}
+\vspace*{\fill}
+\ClearShipoutPictureBG
+\AddToShipoutPictureBG{\BackCoverPic}
+\sffamily
+\color{white}
+\hspace{-2.8cm}
+\begin{minipage}{12cm}
+\small
+\uppercase{About Stamus Networks}
+\vspace{0.3cm}
+
+Stamus Networks believes in a world where defenders are heroes, and a 
+future where those they protect remain safe. As defenders face an onslaught
+of threats from well-funded adversaries, we relentlessly pursue solutions that
+make the defender’s job easier and more impactful. A global provider of
+high-performance network-based threat detection and response systems, 
+Stamus Networks helps enterprise security teams accelerate their response
+to critical threats with solutions that uncover serious and imminent risk
+from network activity. Our advanced network detection and response (NDR) 
+solutions expose threats to critical assets and empower rapid response.
+\vspace{0.8cm}
+
+Copyright \copyright 2022 \hspace{1cm} EB-NWHuntingSuri-082022-1
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}{7cm}
+\small{
+\vspace*{1cm}
+\begin{tabular}{p{3.2cm}p{3.6cm}}
+\begin{center}
+5 Avenue Ingres
+
+75016 Paris
+
+France
+\end{center}
+&
+\begin{center}
+450 E 96th St. Suite 500
+
+Indianapolis, IN 46240
+
+United States
+\end{center}
+\\
+\end{tabular}
+\begin{center}
+Mail: contact@stamus-networks.com
+
+Web: www.stamus-networks.com
+\end{center}
+}
+\end{minipage}
     '''
 }
 

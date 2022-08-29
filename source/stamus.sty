@@ -2,6 +2,7 @@
 \usepackage{eso-pic}
 \usepackage{anyfontsize}
 \usepackage{setspace}
+\usepackage{xcolor}
 %\AddToShipoutPictureBG{\includegraphics[width=\paperwidth,height=\paperheight]{stamus-logo.png}}
 \newcommand\BackgroundPic{%
 \put(0,0){%
@@ -23,3 +24,11 @@ keepaspectratio]{stamus-backcover.jpg}%
 \vfill
 }}} 
 
+\newcommand*\cleartoleftpage{
+\clearpage\ifodd\c@page
+\hbox{}
+\vspace*{\fill}
+\thispagestyle{empty}
+\newpage
+\fi
+}
