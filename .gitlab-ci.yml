@@ -2,7 +2,9 @@ pdf:
   image: sphinxdoc/sphinx-latexpdf
   script:
   - make latexpdf
+  - make epub
   artifacts:
     expire_in: 2 week
     paths:
       - "build/latex/*pdf"
+      - "build/epub/*epub"
