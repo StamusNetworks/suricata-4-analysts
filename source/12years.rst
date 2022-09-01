@@ -19,6 +19,7 @@ One other feature of this first release broke with the previously strict definit
 
 Suricata 1.2 (January 2012) - File Extraction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 File transaction info was added with version 1.2, released in January 2012 and was extended in version 1.3, released six months later. Understanding the HTTP protocol gave Suricata the visibility to see what was transmitted in requests, so it was natural to perform an extraction of the transmitted files.
 
 This was added in version 1.2, along with file checksum computation and file transaction logging. In Suricata 1.3, the keyword “filemd5” was added to verify if the md5 checksum of the transmitted file was present in a list stored in a file. The feature would be extended later to sha1 and sha256, with the “filesha1” and “filesha256” keywords.
