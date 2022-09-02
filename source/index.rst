@@ -17,4 +17,5 @@ Network Threat Hunting with Suricata
    practical-rules-writing
    write-performant-rules
    tls-threat-hunting
+   file-analysis
    about
