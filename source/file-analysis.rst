@@ -122,7 +122,7 @@ Let's take an example with the following signature from Emerging Threats ruleset
   alert http $EXTERNAL_NET any -> $HOME_NET any ( \\
     msg:"ET SCADA PcVue Activex Control Insecure method (AddPage)"; \\
     flow:to_client,established; \\
-    file_data; content:"<OBJECT "; nocase; content:"classid"; nocase; distance:0; \\
+    file.data; content:"<OBJECT "; nocase; content:"classid"; nocase; distance:0; \\
        content:"CLSID"; nocase; distance:0; \\
        content:"083B40D3-CCBA-11D2-AFE0-00C04F7993D6"; nocase; distance:0; \\
        content:".AddPage"; nocase; \\
