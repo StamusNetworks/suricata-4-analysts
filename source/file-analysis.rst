@@ -105,8 +105,8 @@ This file is flagged as malicous by more than 50 security vendors and associated
    Information from Virustotal on the file.
 
 
-Detection on file data
-======================
+Detection on tracked files
+==========================
 
 file.data keywords
 ------------------
@@ -115,11 +115,53 @@ The `file.data` keyword matches on the content of the file, so it can be used to
 with the inspection capability of Suricata. This keyword is aliased to `file_data` (which is used in a lot of available signatures as it
 is the original name). `file.data` is a sticky buffer so it will trigger the matching on the file content for all subsequent match keywords.
 
+Let's take an example with the following signature from Emerging Threats ruleset:
+
+.. code-block::
+
+  alert http $EXTERNAL_NET any -> $HOME_NET any ( \\
+    msg:"ET SCADA PcVue Activex Control Insecure method (AddPage)"; \\
+    flow:to_client,established; \\
+    file_data; content:"<OBJECT "; nocase; content:"classid"; nocase; distance:0; \\
+       content:"CLSID"; nocase; distance:0; \\
+       content:"083B40D3-CCBA-11D2-AFE0-00C04F7993D6"; nocase; distance:0; \\
+       content:".AddPage"; nocase; \\
+       content:"<OBJECT"; nocase; \\
+       pcre:"/^[^>]*?classid\s*=\s*[\x22\x27]?\s*clsid\s*\x3a\s*\x7B?\s*?083B40D3-CCBA-11D2-AFE0-00C04F7993D6/Rsi"; \\
+       reference:url,exploit-db.com/exploits/17896; classtype:attempted-user; \\
+       sid:2013730; rev:4; \\
+    )
+
+This is triggering on https://www.exploit-db.com/exploits/17896 that is a DOS on Activex. This signature is over
+the HTTP protocol and it is using the `file.data` keyword. The reason is that the HTTP protocol is usually compressing
+the data sent from the server to lower the bandwith. As a result a simple match on the content would have failed. By using
+a content match on ` file.data`, we ensure to correctly match on the content that is seen by the browser 
+even if there is server-side compression as Suricata will uncompressed the content to pass the clear text content to the `file.data` keyword.
+
+The matching done in the signature is an interesting use of sticky buffer. It first does multiple content matches to check that all fixed string parts
+of the attack are there. This lower the risk of evaluating the costly regular expression that is used as final check for the presence of the
+attack in the server message.
 
 Magic analysis
 --------------
 
+Among the keywords dealing with file, we find `file.magic` that is a sticky buffer matching on the result of Magic inspection.
+This can for example be used to detect the executables masqueraded as an image seen in the previous section:
 
+.. code-block::
+
+  alert http any any -> any any (msg:"masquerade file"; \
+        http.content_type; content:"image"; \
+        file.magic; content:"executable";)
+
+Another simple possibility offered by `file.magic` is file extraction selection. For example, to extract all PDF to disk, one can use:
+
+
+.. code-block::
+
+  alert tcp any any -> any any (msg:"PDF extraction"; \
+        file.magic:; content:"pdf"; nocase;
+        filestore;)
 
 
 Threat hunting with file
