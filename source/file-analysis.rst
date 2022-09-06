@@ -37,7 +37,6 @@ Please see, Suricata manual for how to set up `file extraction <https://suricata
 
 .. _fileinfo-events:
 
-
 Fileinfo events
 ===============
 
@@ -150,8 +149,8 @@ This can for example be used to detect the executables masqueraded as an image s
 
 .. code-block::
 
-  alert http any any -> any any (msg:"masquerade file"; \
-        http.content_type; content:"image"; \
+  alert http any any -> any any (msg:"masquerade file"; \\
+        http.content_type; content:"image"; \\
         file.magic; content:"executable";)
 
 Another simple possibility offered by `file.magic` is file extraction selection. For example, to extract all PDF to disk, one can use:
@@ -159,12 +158,91 @@ Another simple possibility offered by `file.magic` is file extraction selection.
 
 .. code-block::
 
-  alert tcp any any -> any any (msg:"PDF extraction"; \
-        file.magic:; content:"pdf"; nocase;
+  alert tcp any any -> any any (msg:"PDF extraction"; \\
+        file.magic; content:"pdf"; nocase; \\
         filestore;)
 
+Known bad and known good list
+-----------------------------
+
+If checksum of file are really interesting information found in the `fileinfo` events, they can also be matched on via the `filemd5 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filemd5>`_,
+`filesha1 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha1>`_,
+`filesha256 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha256>`_ keywords. All work the same way: they are given a file as argument that has to contain one checksum per line and they will match
+if the checksum of the file is in the list (or not if the match is negated). For example, to alert on all excutables that are not in the list of known good executable (built from another tool), one can use:
+
+.. code-block::
+
+  alert smb any any -> any any (msg:"Unknown executable file on SMB"; \\
+        filesha256:!sha256-goodexe; \\
+        file.name; content:".exe"; endswith; \\
+        sid:1; rev:1;)
 
 Threat hunting with file
 ========================
 
+Masqueraded files
+-----------------
+
+The masqueraded files described in :ref:`fileinfo-events` can be detected by looking at the `fileinfo` events.
+
+In Elasticsearch, you can simply detect executable masqueraded as PDF with the following request:
+
+.. code-block::
+
+  fileinfo.filename.keywords:*.pdf AND fileinfo.magic:"executable"
+
+You can also be more generic with querying all executable that do not ends up with a regular extension
+
+.. code-block::
+
+  fileinfo.magic:"executable" -fileinfo.filename.keyword:*.exe -fileinfo.filename.keyword:*.dll -fileinfo.filename.keyword:*.com
+
+And if you want to zoom on internal protocol, you can do:
+
+.. code-block::
+
+   (app_proto:"smb" OR app_proto:"nfs") AND  \\
+      (fileinfo.magic:"executable" -fileinfo.filename.keyword:*.exe -fileinfo.filename.keyword:*.dll -fileinfo.filename.keyword:*.com)
+
+Splunk users can write this last one with:
+
+.. code-block::
+
+   app_proto IN ("smb", "nfs") |
+     regex fileinfo.magic = "(?i)executable" |
+     NOT (fileinfo.filename="*.exe" OR fileinfo.filename="*.dll" OR fileinfo.filename="*.com")
+
+Long file name
+--------------
+
+The file names are most of the time kept short when they are linked to legit behavior as nobody like to type
+or read too long strings. So it is interesting to look at any executable file transfer where the filename is 
+at least 15 chars long and does not finish on ".exe" (as installer could have a longer name). This
+can be done with:
+
+.. code-block::
+
+  fileinfo.type:"executable" AND fileinfo.filename.keyword:/.{15}.*/  \\
+    -fileinfo.filename.keyword:*.exe
+
+Entropy on SMB file transfer
+----------------------------
+
+`Entropy <https://en.wikipedia.org/wiki/Entropy_(information_theory)>`_ is the next logical step after looking after long filename because
+it is putting a measure on the randomness of data. And in a lot of case, the malware are using randomly generated file names to avoid collision with
+existing files.
+
+Entropy can be computed in Splunk by using the `URL Toolbox App <https://splunkbase.splunk.com/app/2734/>`_. For example, let's compute the entropy of the executable filename and get the list of filename sorted by entropy: 
+
+.. code-block::
+
+  event_type=fileinfo app_proto=smb |
+  regex fileinfo.magic = "(?i)executable" |
+  `ut_shannon(fileinfo.filename)` |
+  eval entropy = round(ut_shannon, 2) |
+  stats min(timestamp), max(timestamp) by fileinfo.filename, entropy, fileinfo.sha256 |
+  sort -entropy
+
+An entropy value is 4 is already high with regards to a filename so filtering on value can allow you to focus on
+suspect elements.
 
