@@ -1,10 +1,12 @@
 Practical rule writing
 =======================
 
+
 Methodology
 -----------
 
 There are a few techniques that greatly improve the rule writing experience.
+
 
 Use a PCAP file
 ~~~~~~~~~~~~~~~
@@ -27,6 +29,7 @@ The 1000000-1999999 range is reserved for internal usage, so it is a good choice
 Contact the `Sid Allocation project <https://sidallocation.org/>`_ if you want
 to publish your rules publicly.
 
+
 Replay with only your rules file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -45,11 +48,11 @@ With this option, the testing process becomes ::
 Add IP filtering in later stage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is better to write a signature starting with `any any -> any any` then add a filtering like
-`$HOME_NET any -> $EXTERNAL_NET any`. The source and destination IP depends of the signature
+It is better to write a signature starting with 'any any -> any any' then add a filter like
+'$HOME_NET any -> $EXTERNAL_NET any'. The source and destination IP depends on the signature
 and the HOME_NET may not be correctly defined with regards to the data in the PCAP file.
-The result is that the signature may just not match because of 
-that and not because of a complex regular expression you did add in the signature.
+The result is that the signature might just not match because of 
+that and not because of a complex regular expression you added in the signature.
 
 
 Writing a rule - step by step
@@ -57,31 +60,33 @@ Writing a rule - step by step
 
 The following is a suggestion for a process to use when writing signatures:
 
+
 Get a pcap file
 ~~~~~~~~~~~~~~~
 
-First step is to get a PCAP file with the content you want to trigger the rule. Don't hesitate to filter out things in the pcap.
+First step is to get a PCAP file with the content you want triggering the rule. Don't hesitate to filter out things in the pcap.
 For example, if you want to match on a single flow you can do something like ::
 
  tcpdump -r input.pcap -w work.pcap port 53535 and port 443
 
 where 53535 and 443 are the source and destination ports of the flow you want to match
-on. You can also add a few `host` filters in the BPF if the previous command returned
+on. You can also add a few 'host' filters in the BPF if the previous command returned
 more than one flow.
 
-Now we can use the file `work.pcap` for our tests.
+Now we can use the file 'work.pcap' for our tests.
+
 
 Run the file inside Suricata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By running Suricata without any rules on the file, we can extract all the metadata seen by Suricata ::
+By running Suricata without any rules on the file, we can extract all the metadata seen by Suricata: ::
 
  rm data/eve.json
  suricata -r ./trace.pcap -l data/ -S /dev/null
  # explose data/eve.json
 
-In most cases, it will be good enough to get an idea of what fields we should matched on.
-As the data are coming from Suricata itself, the string will be exactly what we should use
+In most cases, it will be good enough to get an idea of what fields we should have matched on.
+As the data is coming from Suricata itself, the string will be exactly what we should use
 in the signature.
 
 If you need more inspection, you can use `Wireshark <https://www.wireshark.org/>`_ to do so.
@@ -90,25 +95,25 @@ by using `Suriwire <https://github.com/regit/suriwire>`_.
 
 .. _write-signature:
 
+
 Write your signature
 ~~~~~~~~~~~~~~~~~~~~
 
-We highly recommend using a text editor supported by the :ref:`Suricata Language Server <suricata-ls>` for the editing.
-Using the editor with the Suricata Language Server extension allows you to easily identify errors and take advantage of auto-completion. During the writing phase, this is easier to have a file
-containing a single signature.
+We highly recommend using a text editor supported by the :ref:`Suricata Language Server <suricata-ls>` for editing.
+Using the editor with the Suricata Language Server extension allows you to easily identify errors and take advantage of auto-completion. During the writing phase, this is easier to have a file containing a single signature.
 
-We can then test if the rule is alerting by running ::
+We can then test if the rule is alerting by running: ::
 
  rm data/eve.json
  suricata -r ./trace.pcap -l data/ -S my.rules -v
  cat eve.json | jq 'select(.event_type=="alert")'
 
-The last command may not even be necessary as by adding `-v` we will have the number of alerts at the end of the output ::
+The last command may not even be necessary. This is because by adding '-v' we will have the number of alerts at the end of the output. ::
 
  [9093] 9/8/2022 -- 23:50:47 - (counters.c:871) <Info> (StatsLogSummary) -- Alerts: 1
 
-If you are not using the :ref:`Suricata Language Server <suricata-ls>`, you need to an engine analysis with Suricata
-to get warnings and performance hints on the signature ::
+If you are not using the :ref:`Suricata Language Server <suricata-ls>`, you need to do an engine analysis with Suricata
+to get warnings and performance hints on the signature: ::
 
  suricata --engine-analysis -l data/ -S my.rules -v
  cat data/rules_analysis.txt
@@ -117,11 +122,11 @@ As mentioned before, the easiest approach is to get an iterative approach here:
 
 - Start with a simple content match on one of the sticky buffer keywords
 - Add some more contents match if needed
-- complete with a regular expression if needed
-- set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
-- add the metadata keyword for more usable data
+- Complete with a regular expression if needed
+- Set up the variable for the IPs (HOME_NET, EXTERNAL_NET for example)
+- Add the metadata keyword for more usable data
 
-Between each steps, run Suricata to verify that your output is correct.
+Between each step, run Suricata to verify that your output is correct.
 
 See the chapter :ref:`Write performant Suricata rules <performant-rules>` for more details and explanation on the steps described
 above and especially the :ref:`Performance improvement process <rules-perfomance-improvement>` section.
