@@ -1,16 +1,16 @@
 IDS features
 ============
 
+
 Suricata rule language 
 ----------------------
 
-Suricata rule language is derived from Snort rule language from 2010 and it has evolved since to become
-a separate language sharing a common root.
+Suricata rule language is derived from Snort rule language from 2010 and it has since evolved to become a separate language sharing a common root.
 
-`Suricata documentation <https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_Rules>`_ is really complete
-with regards to signature language and keywords and is the ultimate reference.
+`Suricata documentation <https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_Rules>`_ is very comprehensive with regards to signature language and keywords and should be considered the ultimate reference guide.
 
 .. index:: Signature
+
 
 Anatomy of a signature
 ----------------------
@@ -21,7 +21,7 @@ A signature has 3 parts:
  * IP options to indicate the characteristics of the IP flow
  * Match and information for the signature
 
-Let's take an example: 
+Let's see an example: 
 
 .. code-block::
 
@@ -29,15 +29,14 @@ Let's take an example:
    http.host; content:"suricata.io"; \
    sid:1; rev;1)
 
-Here Suricata will generate an alert when there is a flow where HTTP application
-layer has been identified and when the HTTP host in the request contains ``suricata.io``.
-``msg`` is the text that will be used as message in the alert event. The ``sid`` keyword
-is the identifier of the signature (must be unique in the ruleset) and ``rev`` is the version
+Here, Suricata will generate an alert when there is a flow where the HTTP application layer has been identified and when the HTTP host in the request contains ``suricata.io``.
+
+``msg`` is the text that will be used as message in the alert event. 
+
+The ``sid`` keyword is the identifier of the signature (must be unique in the ruleset) and ``rev`` is the version
 of the signature.
 
-Let's take a more complete example where we want the flow to be from the internal network
-(identified by the variable $HOME_NET) to the outside world (identified by the variable $EXTERNAL_NET)
-and with destination port ``8080``:
+Let's take a more complete example where we want the flow to be from the internal network (identified by the variable '$HOME_NET') to the outside world (identified by the variable '$EXTERNAL_NET') and with destination port ``8080``:
 
 .. code-block::
 
@@ -54,7 +53,7 @@ Types of keywords
 
 There are 3 types of matching keywords:
 
- * Sticky buffer keywords: the one to be preferred for performance and ease of read
+ * Sticky buffer keywords: the preferred type for performance and readability
  * Content modifier: they set the context to the previous content match
  * The keyword value: simple content match on a field
 
@@ -62,37 +61,34 @@ It is recommended to only use sticky buffer keywords in newly written rules.
 
 .. index:: Sticky Buffer
 
+
 Sticky buffer keywords
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The sticky buffer keyword set the context for the next content matches. For example:
+The sticky buffer keyword sets the context for the next content matches. For example:
 
 .. code-block::
 
  http.host; content:"www"; content:"toto"; pcre:"/toto.[com|org]$/"; \
  http.method; content:"GET";
 
-In this case, the host field in HTTP header will match ``www`` and ``toto`` (via the content keywords)
-and do a regular expression match to detect the domains. Then there is a switch of context
-to the HTTP method and a match on GET on the method is done.
+In this case, the host field in the HTTP header will match ``www`` and ``toto`` (via the content keywords) and do a regular expression match to detect the domains. Then there is a switch of context to the HTTP method and a match on GET when the method is done.
 
 .. index:: Content Modifier
+
 
 Content modifiers keywords
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The content modifier keywords alter the context of the previous content keyword. As a
-result the keywords need to be repeated. So if we want to implement the previous example,
-we will need to have:
+The content modifier keywords alter the context of the previous content keyword. As a result, the keywords need to be repeated. So if we want to implement the previous example we will need to have:
 
 .. code-block::
 
  content:"www"; http_host; content:"toto"; http_host; pcre:"/toto.[com|org]$/W"; \
  content:"GET"; http_method;
 
-Please note that in addition to the repetition of the keyword a modifier (here ``W``)
-has been added to the regular expression match to indicate the match has to be done
-on the HTTP host.
+Please note that in addition to the repetition of the keyword a modifier (``W`` in this example) has been added to the regular expression match to indicate that the match has to be done on the HTTP host.
+
 
 Getting keywords from Suricata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
