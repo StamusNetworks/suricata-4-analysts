@@ -2,12 +2,11 @@
 File Analysis
 =============
 
+
 Introduction
 ============
 
-As Suricata understands most major application layers, it is able to track
-the file transfered over the wire. The list of application layers supporting 
-file extraction includes:
+Because Suricata understands most major application layers, it is able to track the file transfered over the wire. The list of application layers supporting file extraction includes:
 
  - HTTP
  - FTP
@@ -16,31 +15,23 @@ file extraction includes:
  - SMTP
  - HTTP2 
 
-Interesting features are a consequence of this. First, it allows Suricata to generate
-events containing information about the files. The :ref:`fileinfo events <fileinfo-events>` 
-are generated once any tracked file transfer is over (independantly of any detection). These events contain details about
-the file such as its name, various hashes of its content (sha1, sha256, ...) and identification
-of the file type based on its content.
+Interesting features result from this. First, it allows Suricata to generate events containing information about the files. The :ref:`fileinfo events <fileinfo-events>` are generated once any tracked file transfer is over (independantly of any detection). These events contain details about the file such as its name, various hashes of its content (sha1, sha256, ...), and identification of the file type based on its content.
  
-The second feature is the extraction of the file which is triggered by the `filestore <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?#filestore>`_ keyword in signature.
-Extraction can also be switched on globally but it is really intensive in term of performance. One thing
-to mention about extraction is that it is deduplicated as the storage of file on disk is done once per sha256.
-file_data keyword
+The second interesting feature is the extraction of the file which is triggered by the `filestore <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?#filestore>`_ keyword in signature. Extraction can also be switched on globally, but it is really intensive in term of performance. One thing to mention about extraction is that it is deduplicated as the storage of the file on the disk is done once per sha256.
 
-Third feature associated with file is the analysis of file content that can be done via the `file_data` keyword.
-Signature can be written to match on the content of file which for example can be compressed in the case of HTTP
-or under a base64 encoded form in the case of SMTP.
+The third feature associated with the file is the analysis of file content that can be done via the `file_data` keyword. Signatures can be written to match on the content of a file which, for example, can be compressed in the case of HTTP or under a base64 encoded form in the case of SMTP.
 
-Please see, Suricata manual for how to set up `file extraction <https://suricata.readthedocs.io/en/latest/file-extraction/file-extraction.html>`_.
+Please see the Suricata manual for how to set up `file extraction <https://suricata.readthedocs.io/en/latest/file-extraction/file-extraction.html>`_.
 
 .. index:: Fileinfo event
 
 .. _fileinfo-events:
 
+
 Fileinfo events
 ===============
 
-The structure of a `fileinfo` event is the following:
+The structure of a `fileinfo` event is as follows:
 
 .. code-block:: JSON
 
@@ -82,22 +73,14 @@ The structure of a `fileinfo` event is the following:
 The event contains a `fileinfo` object that contains the following fields:
 
  - `filename` announced by the servers
- - `magic` computed by analysing the beginning of the file
- - `size` getting us the file size
+ - `magic` computed by analyzing the beginning of the file
+ - `size` to receive the file size
 
-and it also contains a regular `http` as this file was capture on a HTTP flow. On a different
-application layers different subobject would have been present. The field `app_proto` is a good
-way to know which suboject will be present. 
+It also contains a regular `http` subobject as this file was captured on an HTTP flow. On a different application's layers, a different subobject would have been present. The field `app_proto` is a good way to know which suboject will be present. 
 
-This event is a good example of the value of the various mechanism in place in Suricata. The
-HTTP parser told us that the file content type (`http.http_content_type`) announced by the
-server is an `image\png`. This would be fine if the analysis of content of the file did not
-find out (in the key `fileinfo.magic`) that the file is in reality an executable. For the reference, this
-file was used in an infection by the Trickbot malware.
+This event is a good example of the value of the various mechanisms in place in Suricata. The HTTP parser told us that the file content type (`http.http_content_type`) announced by the server is an 'image\png'. This would be fine if the analysis of content of the file did not find out (in the key `fileinfo.magic`) that the file is, in reality, an executable. For reference, this file was used in an infection by the Trickbot malware.
 
-This can be confirmed by checking the sha1 or sha256 hash of the file in
-`Virustotal <https://www.virustotal.com/gui/file/110743634989ed7a3293b2e39ad85c255fc131c752e029f78d37d4fb8c1dc7f6>`_.
-This file is flagged as malicous by more than 50 security vendors and associated to Trickbot by some of them.
+This can be confirmed by checking the sha1 or sha256 hash of the file in `Virustotal <https://www.virustotal.com/gui/file/110743634989ed7a3293b2e39ad85c255fc131c752e029f78d37d4fb8c1dc7f6>`_. This file is flagged as malicous by more than 50 security vendors and associated to Trickbot by some of them as well.
 
 .. figure:: img/virustotal.png
   
@@ -110,11 +93,9 @@ Detection on tracked files
 file.data keywords
 ------------------
 
-The `file.data` keyword matches on the content of the file, so it can be used to do an analysis of the content of the transferred file
-with the inspection capability of Suricata. This keyword is aliased to `file_data` (which is used in a lot of available signatures as it
-is the original name). `file.data` is a sticky buffer so it will trigger the matching on the file content for all subsequent match keywords.
+The `file.data` keyword matches on the content of the file, so it can be used to do an analysis of the content of the transferred file with the inspection capability of Suricata. This keyword is aliased to `file_data` (which is used in a lot of available signatures as it is the original name). The keyword alias `file.data` is a sticky buffer, so it will trigger matching on the file content for all subsequent match keywords.
 
-Let's take an example with the following signature from Emerging Threats ruleset:
+Let's take an example with the following signature from the Emerging Threats ruleset:
 
 .. code-block::
 
@@ -131,21 +112,18 @@ Let's take an example with the following signature from Emerging Threats ruleset
        sid:2013730; rev:4; \\
     )
 
-This is triggering on https://www.exploit-db.com/exploits/17896 that is a DOS on Activex. This signature is over
-the HTTP protocol and it is using the `file.data` keyword. The reason is that the HTTP protocol is usually compressing
-the data sent from the server to lower the bandwith. As a result a simple match on the content would have failed. By using
-a content match on ` file.data`, we ensure to correctly match on the content that is seen by the browser 
-even if there is server-side compression as Suricata will uncompressed the content to pass the clear text content to the `file.data` keyword.
+This is triggering on https://www.exploit-db.com/exploits/17896 that is a DOS on Activex. This signature is over the HTTP protocol and it is using the `file.data` keyword. This happens because the HTTP protocol is usually compressing the data sent from the server to lower the bandwith. As a result, a simple match on the content would have failed. By using a content match on `file.data`, we ensure a correct match on the content that is seen by the browser  even if there is server-side compression as Suricata will uncompress the content to pass the clear text content to the `file.data` keyword.
 
 The matching done in the signature is an interesting use of sticky buffer. It first does multiple content matches to check that all fixed string parts
-of the attack are there. This lower the risk of evaluating the costly regular expression that is used as final check for the presence of the
+of the attack are there. This lowers the risk of evaluating the costly regular expression that is used as a final check for the presence of the
 attack in the server message.
+
 
 Magic analysis
 --------------
 
-Among the keywords dealing with file, we find `file.magic` that is a sticky buffer matching on the result of Magic inspection.
-This can for example be used to detect the executables masqueraded as an image seen in the previous section:
+Among the keywords dealing with the file, we find `file.magic`. This is a sticky buffer matching on the result of Magic inspection.
+This can, for example, be used to detect the executables masqueraded as an image seen in the previous section:
 
 .. code-block::
 
@@ -162,13 +140,15 @@ Another simple possibility offered by `file.magic` is file extraction selection.
         file.magic; content:"pdf"; nocase; \\
         filestore;)
 
+
 Known bad and known good list
 -----------------------------
 
-If checksum of file are really interesting information found in the `fileinfo` events, they can also be matched on via the `filemd5 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filemd5>`_,
-`filesha1 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha1>`_,
-`filesha256 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha256>`_ keywords. All work the same way: they are given a file as argument that has to contain one checksum per line and they will match
-if the checksum of the file is in the list (or not if the match is negated). For example, to alert on all excutables that are not in the list of known good executable (built from another tool), one can use:
+If checksum of file is really interesting information found in the `fileinfo` events, they can also be matched on via the `filemd5 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filemd5>`_,
+`filesha1 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha1>`_, and 
+`filesha256 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha256>`_ keywords. All of these work the same way: they are given a file as an argument that has to contain one checksum per line and they will match if the checksum of the file is on the list (or not if the match is negated). 
+
+For example, to alert on all excutables that are not on the list of known good executables (built from another tool), one can use:
 
 .. code-block::
 
@@ -176,6 +156,7 @@ if the checksum of the file is in the list (or not if the match is negated). For
         filesha256:!sha256-goodexe; \\
         file.name; content:".exe"; endswith; \\
         sid:1; rev:1;)
+
 
 Threat hunting with file
 ========================
@@ -191,7 +172,7 @@ In Elasticsearch, you can simply detect executable masqueraded as PDF with the f
 
   fileinfo.filename.keywords:*.pdf AND fileinfo.magic:"executable"
 
-You can also be more generic with querying all executable that do not ends up with a regular extension
+You can also be more generic with querying all executables that do not end up with a regular extension:
 
 .. code-block::
 
@@ -212,25 +193,26 @@ Splunk users can write this last one with:
      regex fileinfo.magic = "(?i)executable" |
      NOT (fileinfo.filename="*.exe" OR fileinfo.filename="*.dll" OR fileinfo.filename="*.com")
 
+
 Long file name
 --------------
 
-The file names are most of the time kept short when they are linked to legit behavior as nobody like to type
-or read too long strings. So it is interesting to look at any executable file transfer where the filename is 
-at least 15 chars long and does not finish on ".exe" (as installer could have a longer name). This
-can be done with:
+The file names are usually kept short when they are linked to legitimate behavior because nobody likes to type
+or read lengthy strings. Because of this, it is interesting to look at any executable file transfer where the filename is 
+at least 15 characters long and does not finish on ".exe" (installers could have a longer name). 
+
+This can be done with:
 
 .. code-block::
 
   fileinfo.type:"executable" AND fileinfo.filename.keyword:/.{15}.*/  \\
     -fileinfo.filename.keyword:*.exe
 
+
 Entropy on SMB file transfer
 ----------------------------
 
-`Entropy <https://en.wikipedia.org/wiki/Entropy_(information_theory)>`_ is the next logical step after looking after long filename because
-it is putting a measure on the randomness of data. And in a lot of case, the malware are using randomly generated file names to avoid collision with
-existing files.
+`Entropy <https://en.wikipedia.org/wiki/Entropy_(information_theory)>`_ is the next logical step after looking into a long filename because it measures the randomness of the data. In a lot of cases, malware uses randomly generated file names to avoid collision with existing files.
 
 Entropy can be computed in Splunk by using the `URL Toolbox App <https://splunkbase.splunk.com/app/2734/>`_. For example, let's compute the entropy of the executable filename and get the list of filename sorted by entropy: 
 
@@ -243,6 +225,5 @@ Entropy can be computed in Splunk by using the `URL Toolbox App <https://splunkb
   stats min(timestamp), max(timestamp) by fileinfo.filename, entropy, fileinfo.sha256 |
   sort -entropy
 
-An entropy value is 4 is already high with regards to a filename so filtering on value can allow you to focus on
-suspect elements.
+An entropy value of 4 is already high with regards to a filename, so filtering on value can allow you to focus on suspect elements.
 
