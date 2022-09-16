@@ -1,4 +1,4 @@
-# "Network threat hunting with Suricata" book
+# The "Network threat hunting with Suricata" book
 
 ## Introduction
 
