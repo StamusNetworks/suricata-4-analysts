@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Network Threat Hunting with Suricata
-====================================
+The Security Analyst’s Guide to Suricata
+========================================
 
 .. toctree::
    :maxdepth: 2

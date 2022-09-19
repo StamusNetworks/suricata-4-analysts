@@ -1,8 +1,8 @@
-# The "Network threat hunting with Suricata" book
+# The Security Analyst’s Guide to Suricata
 
 ## Introduction
 
-Stamus Networks is pleased to edit the first ‘open source’ Suricata-focused book, ``Network Threat Hunting with Suricata``.
+Stamus Networks is pleased to offer the first ‘open source’ Suricata-focused book, ``The Security Analyst’s Guide to Suricata``.
 Written by the founders of [Stamus Networks](https://www.stamus-networks.com/), Eric Leblond and Peter Manev, this project provides SOC analysts and threat
 hunters with information on entry points and in-depth coverage for the most important Suricata features.
 
