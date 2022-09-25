@@ -1,3 +1,5 @@
+.. _file-analysis:
+
 =============
 File Analysis
 =============

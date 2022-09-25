@@ -19,4 +19,5 @@ The Security Analyst’s Guide to Suricata
    tls-threat-hunting
    file-analysis
    smb-threat-hunting
+   http-threat-hunting
    about
