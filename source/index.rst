@@ -18,4 +18,5 @@ The Security Analyst’s Guide to Suricata
    write-performant-rules
    tls-threat-hunting
    file-analysis
+   smb-threat-hunting
    about
