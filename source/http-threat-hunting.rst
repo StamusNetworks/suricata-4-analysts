@@ -394,6 +394,6 @@ This can be done in Splunk via the following query:
 
 .. code-block::
 
-  event_type="http" http.status=4* http.length>=10000
+  event_type="http" http.status=4* http.length>=10000 |
       sort -http.length |
       table src_ip, dest_ip, http.hostname, http.status, http.url, http.length
