@@ -142,6 +142,11 @@ Other useful information is also available depending on the different SMB transa
 
 We can also count on Suricata to give us any specific data on top of SMB , like DCERPC and specific Microsoft protocol UUID (``uuid`` key).
 
+.. note::
+
+  Check the `eve SMB format <https://suricata.readthedocs.io/en/latest/output/eve/eve-json-format.html?highlight=http#event-type-tls>`_ page in Suricata manual for more information on the SMB events.
+
+
 SMB and detection
 ==================
 

@@ -69,8 +69,11 @@ Among the interesting fields, we have the ``tls.sni`` which stands for TLS Serve
 
 In this case, we have the ``tls.subject`` equals to ``"C=US, ST=California, L=Mountain View, O=Google LLC, CN=*.gstatic.com"`` which means because of the ``CN`` field that the certificate can serve any site that matches ``*.gstatic.com``. So we have some supplementary information thanks to the TLS SNI.
 
-.. index:: TLS JA3
+.. note::
 
+  Check the `eve TLS format <https://suricata.readthedocs.io/en/latest/output/eve/eve-json-format.html?highlight=http#event-type-tls>`_ page in Suricata manual for more information on the TLS events.
+
+.. index:: TLS JA3
 
 TLS JA3
 -------

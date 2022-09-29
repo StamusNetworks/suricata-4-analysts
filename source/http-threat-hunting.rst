@@ -196,6 +196,10 @@ the HTTP response body.
 The HTTP response body can be logged in alerts and this improves greatly the context provided as the stream TCP can not be read by
 a human.
 
+.. note::
+
+  Check the `eve HTTP format <https://suricata.readthedocs.io/en/latest/output/eve/eve-json-format.html?highlight=http#event-type-http>`_ page in Suricata manual for more information on the HTTP events.
+
 Suricata supports file extraction over HTTP so any of the techniques and information of :ref:`File Analysis <file-analysis>` chapter
 apply here.
 
