@@ -397,3 +397,9 @@ This can be done in Splunk via the following query:
   event_type="http" http.status=4* http.length>=10000 |
       sort -http.length |
       table src_ip, dest_ip, http.hostname, http.status, http.url, http.length
+
+Kibana users can use the following search using Lucene syntax:
+
+.. code-block::
+
+   event_type:http AND http.status:>400 AND http.status:<500 AND http.length:>10000
