@@ -16,8 +16,9 @@ The Security Analyst’s Guide to Suricata
    suricata-as-ids
    practical-rules-writing
    write-performant-rules
-   tls-threat-hunting
    file-analysis
+   flow-hunting
+   tls-threat-hunting
    smb-threat-hunting
    http-threat-hunting
    about
