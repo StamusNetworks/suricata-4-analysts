@@ -8,7 +8,7 @@ Introduction
 HTTP is running the world. It is used by human's actions or, in the case of HTTPS protocol, directly or below TLS.
 It is also widely used by systems via REST API and other inter-server communications.
 
-One of the great benifits of HTTP is the weak message structure which makes it easy to develop a client.
+One of the great benefits of HTTP is the weak message structure which makes it easy to develop a client.
 It is a loose text-based protocol and as such looks very similar to free text. This makes it highly adaptable, but from
 a security point of view this complicates things. Hunting something that has multiple forms can be rather complex. 
 
@@ -23,7 +23,7 @@ The server responds with an answer that has the same structure with headers and 
 information from the server.
 
 To see an example of the minimum requirements of a request is, let's look at this minimal request to google
-done via netcat where we ask for the home page ``/`` with protocol version ``1.1``:
+done via `netcat <https://en.wikipedia.org/wiki/Netcat>`_ where we ask for the home page ``/`` with protocol version ``1.1``:
 
 .. code-block::
 
