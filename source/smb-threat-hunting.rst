@@ -5,7 +5,7 @@ SMB detection and threat hunting
 Introduction
 ============
 
-SMB (Server Message Block) is a client-server communication protocol that has many implementations and is used primarily for sharing access to files printers and resources on the network. The Microsoft windows networks variant is known as Microsoft SMB Protocol. Other systems and OS types like Linux and Mac also include support for SMB.
+SMB (Server Message Block) is a client-server communication protocol that has many implementations and is primarily used for sharing access to files, printers, and resources on the network. The Microsoft windows networks variant is known as Microsoft SMB Protocol. Other systems and OS types like Linux and Mac also include support for SMB.
 
 There are many versions and history revisions
 
@@ -17,7 +17,7 @@ There are many versions and history revisions
 - SMB 3.0.2
 - SMB 3.1.1
 
-and third party implementations
+as well as third party implementations
 
 - Samba
 - Netsmb
@@ -27,7 +27,7 @@ and third party implementations
 - Likewise
 
 
-The implementation and the central internal usage of the protocol by many types of OSes makes it an ideal medium to be used by threat actors for internal/lateral movement. Once foothold is established , the actor can utilize build in and default available functionalities.
+The implementation and the central internal usage of the protocol by many types of operating systems makes it an ideal medium to be used by threat actors for internal/lateral movement. Once a foothold is established, the actor can utilize built-in and default available functionalities.
 
 
 Protocol overview
@@ -46,11 +46,12 @@ SMB Protocol functionality can also include the following
 
 which makes it even more interesting and potent in terms of network visibility and monitoring.
 
+
 SMB analysis in Suricata
 =========================
 
 Suricata supports protocol analysis and logging of all SMB versions like SMB 1.x, SMB 2.x and SMB 3.x.
-Since Suricata 6, SMB has been further improved including thanks to community feedback and code donation.
+Since Suricata 6, SMB has been further improved thanks to community feedback and code donation.
 
 .. code-block:: JSON
 
@@ -90,7 +91,7 @@ Since Suricata 6, SMB has been further improved including thanks to community fe
     }
   }
 
-The ``smb`` object contains all the information about the specific SMB transaction. The ``smb`` object can be found in both ``"event_type":"alert"`` as supplemental metadata and as a stand alone SMB protocol log (``"event_type":"smb"``). It has detailed ``key:value`` field pairs giving information about the transaction. In the example above, ``filename`` is the name of the file accessed or transferred, ``disposition`` is instructing the action the server must take if the file already exists, ``command`` is containing the actual SMB command, ``status`` has the return status of the command.
+The ``smb`` object contains all the information about the specific SMB transaction. The ``smb`` object can be found in both ``"event_type":"alert"`` as supplemental metadata and as a stand alone SMB protocol log (``"event_type":"smb"``). It has detailed ``key:value`` field pairs giving information about the transaction. In the example above, ``filename`` is the name of the file accessed or transferred, ``disposition`` is instructing the action the server must take if the file already exists, ``command`` is containing the actual SMB command, and ``status`` has the return status of the command.
 
 .. code-block:: JSON
 
@@ -153,7 +154,7 @@ SMB and detection
 SMB keywords
 -------------
 
-Out of the box Suricata supports the following keywords in alerts for matching inside the SMB transactions, all are sticky buffers:
+Out of the box, Suricata supports the following keywords in alerts for matching inside the SMB transactions, all of which are sticky buffers:
 
 - dcerpc.iface: Match on the UUID of the protocol
 - dcerpc.opnum: Match on the opnum of the protocol
@@ -170,8 +171,8 @@ Hunting on SMB events
 SMB Scheduled task created remotely
 -----------------------------------
 
-Hunting on SMB events is a big task and to be more potent and successful it also needs infrastructure and organisational local knowledge.
-As an example it might be interesting to know, highlight and investigate when a ``Scheduled Task`` is created remotely. This is indeed a task
+Hunting on SMB events is a big task, and to be more potent and successful it also needs infrastructure and organizational local knowledge.
+As an example, it might be interesting to know, highlight, and investigate when a ``Scheduled Task`` is created remotely. This is indeed a task
 that is definitely only done by some advanced system administrators and by some attackers.
 
 For that we can use the following rule:
@@ -187,7 +188,7 @@ For that we can use the following rule:
      target:dest_ip; \\
      sid:1000001; rev:1;)
 
-The resulting alert event log could look like so, please note the ``flow`` and ``smb`` subsections of the alert event:
+The resulting alert event log could look as follows, please note the ``flow`` and ``smb`` subsections of the alert event:
 
 .. code-block:: JSON
 
@@ -280,6 +281,7 @@ The resulting alert event log could look like so, please note the ``flow`` and `
     }
   }
 
+
 SMB Status Access Denied
 ------------------------
 
@@ -317,9 +319,10 @@ Access denied in SMB could be common occurrences in cases when creating or conne
     }
   }
 
-However what could be interesting is to use the SMB protocol and flow transaction data in Suricata to detect brute forcing. The idea is to highlight all SMB flows that have many ``STATUS_ACCESS_DENIED`` command results in the same flow indicating possible brute forcing.
+However, what could be interesting is using the SMB protocol and flow transaction data in Suricata to detect brute forcing. The idea is to highlight all SMB flows that have many ``STATUS_ACCESS_DENIED`` command results in the same flow indicating possible brute forcing.
 
-This could be achieved by combining 2 Suricata log fields. Mainly ``flow_id`` and ``smb.status``. We can use that combination as ``flow_id`` contains the Suricata native unique flow identifier which can be used to correlate events such as alerts, flows, file transactions and protocol logs from the same flow.
+This could be achieved by combining 2 Suricata log fields - mainly ``flow_id`` and ``smb.status``. We can use that combination as ``flow_id`` contains the Suricata native unique flow identifier which can be used to correlate events such as alerts, flows, file transactions, and protocol logs from the same flow.
+
 
 JQ command line query
 ~~~~~~~~~~~~~~~~~~~~~
@@ -329,13 +332,13 @@ JQ command line query
   jq 'select(.event_type=="smb" and .smb.status == "STATUS_ACCESS_DENIED")|.flow_id' /var/log/suricata/eve.json | sort | uniq -c
   10 1047258484058895
 
-The JQ query above returns the result which is 10 time status ``STATUS_ACCESS_DENIED`` in the flow whose ``flow_id`` is ``1047258484058895``.
-So we have 10 Access denied in the same flow which is definitely suspicious.
+The JQ query above returns a result of 10 ``STATUS_ACCESS_DENIED`` statuses in the flow whose ``flow_id`` is ``1047258484058895``.
+So we have 10 instances of Denied Access in the same flow which is definitely suspicious.
 
 Kibana query
 ~~~~~~~~~~~~
 
-Create a table visualisation that uses an aggregation in Kibana on the field ``flow_id`` with the following query search
+Create a table visualisation that uses an aggregation in Kibana on the field ``flow_id`` with the following query search:
 
 .. code-block::
 
