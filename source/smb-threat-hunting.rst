@@ -5,7 +5,7 @@ SMB detection and threat hunting
 Introduction
 ============
 
-SMB (Server Message Block) is a client-server communication protocol that has many implementations and is used primarily for sharing access to files printers and resources on the network. The Microsoft windows networks variant is is known as Microsoft SMB Protocol. Other systems and OS types like Linux and Mac also include support for SMB.
+SMB (Server Message Block) is a client-server communication protocol that has many implementations and is used primarily for sharing access to files printers and resources on the network. The Microsoft windows networks variant is known as Microsoft SMB Protocol. Other systems and OS types like Linux and Mac also include support for SMB.
 
 There are many versions and history revisions
 
@@ -49,7 +49,7 @@ which makes it even more interesting and potent in terms of network visibility a
 SMB analysis in Suricata
 =========================
 
-Suricata supports protocol analysis and logging of all SMB  versions - SMB 1.x, SMB 2.x and SMB 3.x.
+Suricata supports protocol analysis and logging of all SMB versions like SMB 1.x, SMB 2.x and SMB 3.x.
 Since Suricata 6, SMB has been further improved including thanks to community feedback and code donation.
 
 .. code-block:: JSON
@@ -90,7 +90,7 @@ Since Suricata 6, SMB has been further improved including thanks to community fe
     }
   }
 
-The ``smb`` object contains all the information about the specific SMB transaction. The ``smb`` object can be found in both ``"event_type":"alert"`` as supplemental metadata and as a stand alone SMB protocol log - ``"event_type":"smb"``. It has detailed ``key:value``  field pairs giving information about the transaction. In the example above, ``filename`` is the name of the file accessed or transferred, ``disposition`` is instructing the action the server must take if the file already exists, ``command`` is containing the actual SMB command, ``status`` has the return status of the command.
+The ``smb`` object contains all the information about the specific SMB transaction. The ``smb`` object can be found in both ``"event_type":"alert"`` as supplemental metadata and as a stand alone SMB protocol log (``"event_type":"smb"``). It has detailed ``key:value`` field pairs giving information about the transaction. In the example above, ``filename`` is the name of the file accessed or transferred, ``disposition`` is instructing the action the server must take if the file already exists, ``command`` is containing the actual SMB command, ``status`` has the return status of the command.
 
 .. code-block:: JSON
 
@@ -140,7 +140,7 @@ Other useful information is also available depending on the different SMB transa
       "call_id": 2
     }
 
-We can also count on Suricata to give us any specific data on top of SMB , like  DCERPC and specific Microsoft protocol UUID - ``uuid``.
+We can also count on Suricata to give us any specific data on top of SMB , like DCERPC and specific Microsoft protocol UUID (``uuid`` key).
 
 SMB and detection
 ==================
@@ -167,7 +167,7 @@ SMB Scheduled task created remotely
 
 Hunting on SMB events is a big task and to be more potent and successful it also needs infrastructure and organisational local knowledge.
 As an example it might be interesting to know, highlight and investigate when a ``Scheduled Task`` is created remotely. This is indeed a task
-that is definitely only done by some advanced system administrator and by some attackers.
+that is definitely only done by some advanced system administrators and by some attackers.
 
 For that we can use the following rule:
 
