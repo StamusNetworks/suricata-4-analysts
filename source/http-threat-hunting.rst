@@ -5,24 +5,24 @@ HTTP detection and threat hunting
 Introduction
 ============
 
-HTTP is running the world. It is used by humans actions or directly or below TLS in the case of HTTPS protocol.
-It is also massively used by systems via REST API and other inter servers communications.
+HTTP is running the world. It is used by human's actions or, in the case of HTTPS protocol, directly or below TLS.
+It is also widely used by systems via REST API and other inter-server communications.
 
-One of the great force of HTTP is that the structure of message is really weak making it easy to develop a client.
-It is a loose text based protocol and as such looks really like free text. This makes it highly adaptable but from
-a security point of view this complicate things. It is indeed complex to hunt something that can have multiple forms.
+One of the great benifits of HTTP is the weak message structure which makes it easy to develop a client.
+It is a loose text-based protocol and as such looks very similar to free text. This makes it highly adaptable, but from
+a security point of view this complicates things. Hunting something that has multiple forms can be rather complex. 
 
 
 Protocol overview
 =================
 
-In HTTP, the client is the first to send data via the way of an HTTP request. This message contains headers with
-a few mandatory fields and a lot of optional headers that are here to give more context to the server about the request
-so it can adapt its answer. And request contains an optional body.
-The answer by the server has the same structure with headers and a body that is always because HTTP is about getting
+In HTTP, the client is the first to send data via an HTTP request. This message contains headers with
+a few mandatory fields and a lot of optional headers which give more context to the server about the request
+so it can adapt its answer. The request contains an optional body.
+The server responds with an answer that has the same structure with headers and a body. This is because HTTP is focused on getting
 information from the server.
 
-To consider how minimal requirements on requests are, let's look at this minimal request to google
+To see an example of the minimum requirements of a request is, let's look at this minimal request to google
 done via netcat where we ask for the home page ``/`` with protocol version ``1.1``:
 
 .. code-block::
@@ -30,7 +30,7 @@ done via netcat where we ask for the home page ``/`` with protocol version ``1.1
   # nc -v google.fr 80
   GET / HTTP/1.1
 
-This is getting an answer from Google:
+This is the answer from Google:
 
 .. code-block::
 
@@ -50,10 +50,10 @@ This is getting an answer from Google:
   5acf
   <!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" ...
 
-The answer has the typical structure of an HTTP message with status line (here ``HTTP/1.1 200 OK``) followed by the headers (key and value)
+This answer has the typical structure of an HTTP message with status line (here ``HTTP/1.1 200 OK``), followed by the headers (key and value),
 then an empty line that is followed by the body.
 
-This dissymmetry between the request and the response in this example emphasizes one of the main concept of HTTP design: it should work even if client implementation is really poor.
+This dissymmetry between the request and the response in this example emphasizes one of the main concepts of HTTP design: it should work even if client implementation is really poor.
 
 If we look at the same HTTP request to google.fr done via Firefox, we have the following request:
 
@@ -68,8 +68,8 @@ If we look at the same HTTP request to google.fr done via Firefox, we have the f
   Connection: keep-alive
   Upgrade-Insecure-Requests: 1
 
-The headers list is far longer and gives far more information about what the client
-is able to support or want when the server will answer. For example, here, because
+The headers list is far longer and gives more information about what the client
+is able to support or what it wants from the server's answer. For example, here, because
 we have the header ``Upgrade-Insecure-Requests`` set to 1, we don't get the web page
 content as we got in the previous request but we have a redirection to the Secure
 HTTPS version of google.fr:
@@ -88,14 +88,14 @@ HTTPS version of google.fr:
   X-Frame-Options: SAMEORIGIN
 
 As we will see later, the fact that a lot of freedom is given in the protocol
-is a key point in profiling non regular behavior that do not follow the implicit norm. 
+is a key point in profiling non-regular behavior that does not follow the implicit norm. 
 
 
 HTTP analysis in Suricata
 =========================
 
-Suricata has a really complete support of HTTP. The development of the parser was initiated at the beginning of the project
-and it is evolving since with the releases.
+Suricata has very robust support for HTTP. The development of the parser was initiated at the beginning of the project
+and has continued to evolve with continuing update releases.
 
 HTTP request and response are logged in a single event:
 
@@ -127,14 +127,14 @@ HTTP request and response are logged in a single event:
   }
 
 The ``http`` object contains all the information about the request and the response. Fields like ``hostname`` or
-``http_user_agent`` are coming from the client and fields such as ``status``, ``length`` or ``http_content_type``
+``http_user_agent`` are coming from the client and fields such as ``status``, ``length``, or ``http_content_type``
 are coming from the server. The log also include the ``tx_id`` which stands for transaction identifier. It is
 giving the number of HTTP transaction (request + response) seen on the flow at the moment of the request.
-In this example, it is 0 which means this is the first one.
+In this example it is 0, which means this is the first one.
 
-As you can see, the event showed here does not contain all the headers. The dump of all headers can be activated
+As you can see, the event shown here does not contain all the headers. The dump of all headers can be activated
 in the configuration via the ``dump-all-headers`` configuration in the HTTP logging. This will provide far more
-information but it is also going to be far more verbose:
+information, but it is also going to be far more verbose:
 
 .. code-block:: JSON
 
@@ -188,19 +188,19 @@ information but it is also going to be far more verbose:
     ]
 
 Another interesting feature of HTTP support in Suricata is the transparent decompression of the HTTP response body.
-If the client support the feature, the server can return the object that is asked by the client in a compressed form
+If the client supports the feature, the server can return the object asked for by the client in a compressed form
 to downsize the transfer. The result is that the content of the HTTP body in the TCP stream is just compression noise.
-Suricata decompress on the fly the data and provides the decompressed content to the keyword and layers that are using
+Suricata decompresses the data in real-time and provides the decompressed content to the keyword and layers that are using
 the HTTP response body.
 
-The HTTP response body can be logged in alerts and this improves greatly the context provided as the stream TCP can not be read by
+The HTTP response body can be logged in alerts and this greatly improves the context provided as the stream TCP cannot be read by
 a human.
 
 .. note::
 
   Check the `eve HTTP format <https://suricata.readthedocs.io/en/latest/output/eve/eve-json-format.html?highlight=http#event-type-http>`_ page in Suricata manual for more information on the HTTP events.
 
-Suricata supports file extraction over HTTP so any of the techniques and information of :ref:`File Analysis <file-analysis>` chapter
+Suricata supports file extraction over HTTP, so any of the techniques and information of :ref:`File Analysis <file-analysis>` chapter
 apply here.
 
 HTTP and detection
@@ -209,21 +209,21 @@ HTTP and detection
 HTTP keywords
 -------------
 
-Suricata has a more than 25 sticky buffer keywords to match on HTTP fields, they cover
-most of the headers and the content. These last ones are interesting and in particular
+Suricata has a more than 25 sticky buffer keywords to match on HTTP fields, covering
+most of the headers and the content. These last ones are interesting, specifically 
 ``http.response_body`` that matches on the body of the response sent by the server. As
 described in the previous chapter, the content sent by the server can be on a compressed
 form and Suricata will provide the decompressed version to the detection engine.
 
-Most keywords match on normalized field. This is really convenient as the
-rules writer does not have to take into account the possible variant. For example,
-the ``http.host`` keyword is normalized and will always be lowercase. This prevent
+Most keywords match on a normalized field. This is really convenient as the
+rules writer does not have to take the possible variant into account. For example,
+the ``http.host`` keyword is normalized and will always be lowercase. This prevents
 trivial evasion of detection by connecting to `BaDdoMAin.OrG` instead of the regular
 `baddomain.org`.
 
-But in some cases, the characteristic looked in the traffic is dependant of the
+In some cases, the characteristic seen in the traffic is dependant of the
 content seen on the wire. For this reason, Suricata is providing some alternate
-keywords to match on the raw, not normalized content. For example, ``http.host.raw``
+keywords to match on the raw, unnormalized content. For example, ``http.host.raw``
 will match on the HTTP host in its raw form.
 
 Cookbook
@@ -232,7 +232,7 @@ Cookbook
 Match on a domain and its subdomains
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A domain is known as being malicious and we want to alert on all request to this domain
+A domain is known to be malicious and we want to alert on all requests to this domain
 or any of its subdomains:
 
 .. code-block::
@@ -244,7 +244,7 @@ or any of its subdomains:
 The match is obtained by using the sticky buffer ``http.host`` to
 match on the HTTP host sent by the client. By using ``dotprefix``, a 
 ``.`` will be prepended to the buffer so it will not match on ``lovelypandabear.gov``.
-Then the signature uses the ``endswith`` keyword to be sure the string ends with the specified content.
+Then the signature uses the ``endswith`` keyword to ensure the string ends with the specified content.
 It will prevent a match on a domain like ``pandabear.governed.org``.
 
 
@@ -252,7 +252,7 @@ Checking malicious HTTP user agent
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some variants of Trickbot are using an HTTP user agent that is set to ``test``.
-A signature to detect this behavior can be:
+A signature to detect this behavior could be:
 
 .. code-block::
 
@@ -260,16 +260,16 @@ A signature to detect this behavior can be:
         http.user_agent; content:"test"; startswith; endswith;
         sid:1; rev:1;)
 
-We use the same technic as for the domain with ``endswith`` keyword
-that we complement with ``startswith`` to ensure a full equality
+We use the same technique as the domain with the ``endswith`` keyword
+that we complement with ``startswith`` to ensure full equality
 of the strings.
 
 Clear text authentication and password extraction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Clear text authentication over HTTP is still a thing in some environments.
-So detecting this behavior and collecting the user and password to
-check them against some other systems to detect credential reuse is really
+Clear text authentication over HTTP is still relevant in some environments. 
+Detecting this behavior and collecting the user and password to
+check them against other systems to detect credential reuse is really
 interesting. 
 
 This can be done with a single signature:
@@ -282,24 +282,24 @@ This can be done with a single signature:
        base64_data; pcre:"/([^:]+):(.+)/,flow:user,flow:password"; \\
        sid:1; rev:1;)
 
-It is first checking for the `Authorization` header and then it uses
+This signature first checks for the `Authorization` header and then uses
 ``base64_decode`` to convert the content from base64 to regular encoding.
-The ``base64_data`` is a sticky buffer to access to the content transformed
+The ``base64_data`` is a sticky buffer to access the content transformed
 by ``base64_decode``. In this buffer, we have the user name followed
-by the password so we can extract it via a regular expression via the ``pcre`` keyword.
+by the password so we can extract it via a regular expression using the ``pcre`` keyword.
 
-The regular expression is really interesting as it is using the data extraction feature
+The regular expression is really interesting as it uses the data extraction feature
 of Suricata:
 
 .. code-block::
 
   pcre:"/([^:]+):(.+)/,flow:user,flow:password"
 
-The regular expression has 2 groups `([^:]+)` and `(.+)`. First
-one get everything before the `:` and the second one take the rest.
-So first one is the user and second is the password. The magic appends
+The regular expression has 2 groups `([^:]+)` and `(.+)`. The first
+one gets everything before the `:` and the second one take the rest.
+So the first group retrieves the user and second extracts the password. The magic appends
 in the modifiers: ``,flow:user,flow:password``. This is a Suricata extension.
-It is stating here the first group should be store in a flow variable named
+It is stating here that the first group should be stored in a flow variable named
 ``user`` and that second group should be stored in a flow variable named ``password``.
 
 Doing this, the alert is augmented with a ``metadata`` object that contains a ``flowvars``
@@ -335,9 +335,9 @@ Hunting on HTTP events
 HTTP hunting signatures in ETOpen and ETPro
 -------------------------------------------
 
-This is not a technique to hunt directly using application layer events but the `ETOpen and ETPro ruleset <https://www.proofpoint.com/us/resources/data-sheets/etpro-versus-et-open-ruleset-comparison>`_ 
-contains a few hundred of particularly interesting hunting signatures for the HTTP protocol. Enabling these
-signatures and considering them as pre executed queries is highly recommended.
+This is not a technique to hunt directly using application layer events, but the `ETOpen and ETPro ruleset <https://www.proofpoint.com/us/resources/data-sheets/etpro-versus-et-open-ruleset-comparison>`_ 
+contains a few hundred particularly interesting hunting signatures for the HTTP protocol. Enabling these
+signatures and considering them as pre-executed queries is highly recommended.
 
 For example, the following signature matches on POST request using an IPv4 address as hostname and missing
 headers that are usually sent by regular browsers.
@@ -357,14 +357,14 @@ headers that are usually sent by regular browsers.
         classtype:bad-unknown; sid:2018359; rev:4; \\
         metadata:created_at 2014_04_04, former_category INFO, updated_at 2020_08_20;)
 
-This signature is interesting because it is matching the Tactics, Techniques and Procedures of
+This signature is interesting because it matches the Tactics, Techniques, and Procedures of
 some actors without having to know the threat.
 
 
 Rare HTTP user agents
 ---------------------
 
-As HTTP is really frequent on network, using the rare approach is often a good way to see outliers
+As HTTP is frequently seen on network, using the rare approach is often a good way to see outliers
 that can be interesting to investigate.
 
 This can be done in Splunk via the following query:
@@ -373,10 +373,11 @@ This can be done in Splunk via the following query:
 
   search event_type="http" | rare http.http_user_agent | sort count | head 10
 
+
 Rare HTTP hosts queried without referrer
 ----------------------------------------
 
-The list of hosts that are used as entry point when browsing is fairly small in most environments.
+The list of hosts used as an entry point when browsing is fairly small in most environments.
 Getting the rarest one is interesting because it will exhibit potential unwanted behavior such
 as payload download.
 
@@ -390,7 +391,7 @@ This can be done in Splunk via the following query:
 HTTP errors with Abnormal Content Length
 ----------------------------------------
 
-Some attackers try to hide their exchange by pretending the requests are failing. As not found pages are
+Some attackers try to hide their exchange by pretending the requests are failing. As unfound pages are
 usually fairly small, looking at error pages with a decent size is a good start for a hunt.
 
 
