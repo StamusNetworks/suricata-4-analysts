@@ -10,6 +10,7 @@ The Security Analyst’s Guide to Suricata
    :maxdepth: 2
    :caption: Contents:
 
+   foreword
    intro
    tools
    generic-hunting
