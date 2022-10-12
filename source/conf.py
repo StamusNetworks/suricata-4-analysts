@@ -22,7 +22,7 @@ copyright = '2021-2022, Stamus Networks'
 author = 'Eric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
-release = '0.2'
+release = '1.0'
 
 
 # -- General configuration ---------------------------------------------------
