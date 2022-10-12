@@ -1,5 +1,5 @@
-Preface by the authors
-======================
+Preface
+=======
 
 We are pleased to present the industry’s first open-source book on the world’s most popular open-source network security engine, Suricata. The idea for this book emerged after it became obvious to us that many security practitioners using Suricata either struggle to effectively use the most powerful capabilities of the tool or simply don’t realize they exist. 
 

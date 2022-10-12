@@ -1,7 +1,11 @@
 pdf:
   image: sphinxdoc/sphinx-latexpdf
   script:
-  - make latexpdf
+  - make latex
+  - cd build/latex/
+  - sed -e 's/chapter{Preface}/chapter*{Preface}/' -i thesecurityanalystsguidetosuricata.tex
+  - make
+  - cd ../..
   - make epub
   artifacts:
     expire_in: 2 week
