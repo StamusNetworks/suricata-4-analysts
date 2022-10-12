@@ -1,5 +1,5 @@
-Generic Threat Hunting
-======================
+Protocol independent threat hunting
+===================================
 
 
 Threat Hunting with IDS and NSM data
