@@ -23,6 +23,7 @@ author = 'Eric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
+version  = '1.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -161,3 +162,5 @@ Web: \href{https://www.stamus-networks.com}{\textcolor{white}{www.stamus-network
 latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg", "img/stamus-backcover.jpg"]
 
 latex_logo = "img/stamus-logo.png"
+
+epub_cover = ('_static/ebook-cover.jpg', '')
