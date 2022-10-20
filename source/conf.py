@@ -162,7 +162,7 @@ Web: \href{https://www.stamus-networks.com}{\textcolor{white}{www.stamus-network
 
 if os.getenv('PRINT'):
     latex_elements = {
-        'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot]{geometry}''',
+        'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot, includehead]{geometry}''',
         'pointsize': '10pt',
     }
 else:
