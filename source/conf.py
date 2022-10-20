@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import os
 
 # -- Project information -----------------------------------------------------
 
@@ -158,6 +159,12 @@ Web: \href{https://www.stamus-networks.com}{\textcolor{white}{www.stamus-network
 \end{minipage}
     '''
 }
+
+if os.getenv('PRINT'):
+    latex_elements = {
+        'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot]{geometry}''',
+        'pointsize': '10pt',
+    }
 
 latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg", "img/stamus-backcover.jpg"]
 

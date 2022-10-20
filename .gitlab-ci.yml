@@ -1,6 +1,12 @@
 pdf:
   image: sphinxdoc/sphinx-latexpdf
   script:
+  - make latex PRINT=1
+  - cd build/latex/
+  - sed -e 's/chapter{Preface}/chapter*{Preface}/' -i thesecurityanalystsguidetosuricata.tex
+  - make
+  - cp thesecurityanalystsguidetosuricata.pdf thesecurityanalystsguidetosuricata-print.pdf
+  - cd ../..
   - make latex
   - cd build/latex/
   - sed -e 's/chapter{Preface}/chapter*{Preface}/' -i thesecurityanalystsguidetosuricata.tex
