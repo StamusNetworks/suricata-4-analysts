@@ -324,8 +324,70 @@ But it is also possible to do this in Splunk: ::
  search validity < 0 |
  top tls.subject, tls.issuerdn, tls.notafter, timestamp, validity
 
-The complex part consists of parsing the two time stamps we are interested in with `strptime` and then computing the validity.
+The complex part consists of parsing the two time stamps we are interested in with `strptime` and then computing the validity. The result
+of the query is shown on :numref:`splunk-expired-tls`.
+
+.. _splunk-expired-tls:
 
 .. figure:: img/splunk-expired-tls.png
 
    Splunk search on expired certificates
+
+
+TLS Cipher Suite analysis
+-------------------------
+
+The negotiated TLS Cipher Suites used in a network are interesting to 
+monitor. They contain the set of algorithms used on TLS to protect the communication.
+The level of security and confidentiality provided by the various algorithm varies a lot
+for instance TLS_NULL_WITH_NULL_NULL is a valid TLS cipher suite and, yes, it means nothing
+is done and that data is in clear text. This is for sure, an extreme case but some other
+TLS cipher suites are to be avoided like the one using RC4 algorihtm.
+
+If this information is not directly available in Suricata TLS events, it is although available
+as one of the TLS JA3S parameter. The second parameter of the JA3S string is indeed
+the Cipher ID. This is an integer as TLS is not sending a string over the wire but this
+is an interesting information anyway. 
+
+We can use Splunk's extraction capabilities to get the value of the Cipher ID in a distinct field.
+All we need to do is to split the JA3S string and get the second element. It can be done as follows.
+
+.. code-block::
+
+  event_type=tls |
+    spath tls.ja3s.string output=ja3s_string |
+    eval ja3s_elt=split(ja3s_string,",") |
+    eval cipher_id=mvindex(ja3s_elt, 1)
+
+
+Getting from the ID to the string version of the TLS Cipher suite can then be done via a lookup table.
+It can be extracted from IANA website. This mapping is available in the 
+`Stamus Splunk App <https://splunkbase.splunk.com/app/5262>`_ and it also contains some other interesting
+information.
+
+The French National Cybersecurity Agency (`ANSSI <https://www.ssi.gouv.fr/>`_) has published `Security Recommendations for TLS <https://www.ssi.gouv.fr/guide/recommandations-de-securite-relatives-a-tls/>`_ where
+a list of recommended TLS cipher suites is defined. Their classification also contains `degraded` TLS cipher suites that are ok to use if there is no
+alternative. All other have to be considered as insecure. The mapping included in Stamus Splunk App contains this information in the lookup table
+so it is possible to search and do statistics on the security of the TMS Cipher suite seen on the network. For example, to list all insecure 
+TLS connections seen on the network, one can do in Splunk:
+
+.. code-block::
+
+  event_type=tls |
+    spath tls.ja3s.string output=ja3s_string |
+    eval ja3s_elt=split(ja3s_string,",") |
+    eval cipher_id=mvindex(ja3s_elt, 1) |
+    lookup tls_cipher_mapping.csv id as cipher_id |
+    search cipher_security=insecure
+
+Here we add to the previous a call to the lookup followed by a search on the field `cipher_security` that is added by the lookup.
+
+.. _splunk-tls-cipher:
+
+.. figure:: img/splunk-tls-cipher.png
+
+   TLS Cipher Suites analysis in Stamus Splunk App
+
+Using this technique, it is possible to build searches that classify the TLS cipher suites and
+display the insecure ones. This is available in one of the Stamus Splunk App dashboard as shown on :numref:`splunk-tls-cipher`.
+
