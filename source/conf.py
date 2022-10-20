@@ -164,6 +164,21 @@ if os.getenv('PRINT'):
     latex_elements = {
         'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot, includehead]{geometry}''',
         'pointsize': '10pt',
+        'maketitle': r'''r'\newcommand\sphinxbackoftitlepage{
+\vspace*{\fill}
+\textit{The Security Analyst’s Guide to Suricata} \\
+Copyright @ 2022 by Eric Leblond and Peter Manev \\
+Published by Stamus Networks \\
+450 E. 96th Street, Suite 500 \\
+Indianapolis, IN 46240 \\
+This work is licensed under Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license. \\
+Cover Design: Delin Design \\
+First printing: October, 2022 \\
+Printed in the United States of America \\
+Trade hardcover: ISBN: 979-8-9871510-0-6
+}
+\sphinxmaketitle
+        '''
     }
 else:
     latex_logo = "img/stamus-logo.png"
