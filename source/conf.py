@@ -165,9 +165,10 @@ if os.getenv('PRINT'):
         'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot]{geometry}''',
         'pointsize': '10pt',
     }
+else:
+    latex_logo = "img/stamus-logo.png"
 
 latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-background.jpg", "img/stamus-title.jpg", "img/stamus-backcover.jpg"]
 
-latex_logo = "img/stamus-logo.png"
 
 epub_cover = ('_static/ebook-cover.jpg', '')
