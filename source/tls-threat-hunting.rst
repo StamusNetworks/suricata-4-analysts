@@ -339,18 +339,18 @@ TLS Cipher Suite analysis
 
 The negotiated TLS Cipher Suites used in a network are interesting to 
 monitor. They contain the set of algorithms used on TLS to protect the communication.
-The level of security and confidentiality provided by the various algorithm varies a lot
-for instance TLS_NULL_WITH_NULL_NULL is a valid TLS cipher suite and, yes, it means nothing
-is done and that data is in clear text. This is for sure, an extreme case but some other
-TLS cipher suites are to be avoided like the one using RC4 algorihtm.
+The level of security and confidentiality provided by the various algorithms varies greatly.
+For instance, TLS_NULL_WITH_NULL_NULL is a valid TLS cipher suite and, yes, it means that nothing
+is done and the data is in clear text. While this is an extreme case, some other
+TLS cipher suites should be avoided like the one using the RC4 algorihtm.
 
-If this information is not directly available in Suricata TLS events, it is although available
-as one of the TLS JA3S parameter. The second parameter of the JA3S string is indeed
-the Cipher ID. This is an integer as TLS is not sending a string over the wire but this
-is an interesting information anyway. 
+If this information is not directly available in Suricata TLS events, it is available
+as one of the TLS JA3S parameters. The second parameter of the JA3S string is
+the Cipher ID. This is an integer, as TLS is not sending a string over the wire. Nevertheless, this
+is interesting information anyway. 
 
 We can use Splunk's extraction capabilities to get the value of the Cipher ID in a distinct field.
-All we need to do is to split the JA3S string and get the second element. It can be done as follows.
+All we need to do is to split the JA3S string and get the second element. This can be done as follows:
 
 .. code-block::
 
@@ -361,15 +361,15 @@ All we need to do is to split the JA3S string and get the second element. It can
 
 
 Getting from the ID to the string version of the TLS Cipher suite can then be done via a lookup table.
-It can be extracted from IANA website. This mapping is available in the 
-`Stamus Splunk App <https://splunkbase.splunk.com/app/5262>`_ and it also contains some other interesting
+It can be extracted from the IANA website. This mapping is available in the 
+`Stamus Splunk App <https://splunkbase.splunk.com/app/5262>`_ which also contains other interesting
 information.
 
 The French National Cybersecurity Agency (`ANSSI <https://www.ssi.gouv.fr/>`_) has published `Security Recommendations for TLS <https://www.ssi.gouv.fr/guide/recommandations-de-securite-relatives-a-tls/>`_ where
-a list of recommended TLS cipher suites is defined. Their classification also contains `degraded` TLS cipher suites that are ok to use if there is no
-alternative. All other have to be considered as insecure. The mapping included in Stamus Splunk App contains this information in the lookup table
-so it is possible to search and do statistics on the security of the TMS Cipher suite seen on the network. For example, to list all insecure 
-TLS connections seen on the network, one can do in Splunk:
+a list of recommended TLS cipher suites is defined. Their classification also contains `degraded` TLS cipher suites that are ok to use if there are no
+alternatives. All other TLS cipher suites should be considered as insecure. The mapping included in the Stamus Splunk App contains this information in the lookup table,
+so it is possible to search and do statistics on the security of the TLS cipher suite seen on the network. For example, to list all insecure 
+TLS connections seen on the network, one can do the following in Splunk:
 
 .. code-block::
 
@@ -389,5 +389,5 @@ Here we add to the previous a call to the lookup followed by a search on the fie
    TLS Cipher Suites analysis in Stamus Splunk App
 
 Using this technique, it is possible to build searches that classify the TLS cipher suites and
-display the insecure ones. This is available in one of the Stamus Splunk App dashboard as shown on :numref:`splunk-tls-cipher`.
+display the insecure ones. This is available in one of the Stamus Splunk App dashboards as shown on :numref:`splunk-tls-cipher`.
 
