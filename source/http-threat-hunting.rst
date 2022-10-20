@@ -209,7 +209,7 @@ HTTP and detection
 HTTP keywords
 -------------
 
-Suricata has a more than 25 sticky buffer keywords to match on HTTP fields, covering
+Suricata has more than 25 sticky buffer keywords to match on HTTP fields, covering
 most of the headers and the content. These last ones are interesting, specifically 
 ``http.response_body`` that matches on the body of the response sent by the server. As
 described in the previous chapter, the content sent by the server can be on a compressed
