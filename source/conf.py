@@ -172,3 +172,5 @@ latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-backg
 
 
 epub_cover = ('_static/ebook-cover.jpg', '')
+
+today_fmt = '%B %Y'
