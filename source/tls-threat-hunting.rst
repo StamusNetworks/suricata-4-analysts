@@ -267,15 +267,21 @@ Self signed certificates can be detected via signatures. See `this blog post <ht
 
 This can also be done using the TLS events. If `tls.issuerdn` is equal to `tls.subject`, then we have a self signed certificate.
 
-If you have only the EVE JSON file and access to the command line, you can use `jq` to find them: ::
+If you have only the EVE JSON file and access to the command line, you can use `jq` to find them:
+
+.. code-block::
 
   cat eve.json | jq 'select(.event_type=="tls" and .tls.issuerdn==.tls.subject)'
 
-In Splunk, one can simply do the following: ::
+In Splunk, one can simply do the following:
+
+.. code-block::
 
  event_type="tls" tls.subjectdn=tls.issuerdn
 
-If your data is in Elasticsearch you can do a search in Kibana with DSL filter: ::
+If your data is in Elasticsearch you can do a search in Kibana with DSL filter:
+
+.. code-block::
 
   {
     "query": {
@@ -299,11 +305,15 @@ Unsecure protocol
 
 Some TLS and SSL versions are considered to be unsecure due to design flaws and known successful attacks. Therefore, it is interesting to find any connection using this weak policy so any eye dropping can be prevented. Known unsecure versions are all SSL versions and TLS up to 1.1.
 
-It is possible to search this Elasticsearch by using the following filter: ::
+It is possible to search this Elasticsearch by using the following filter:
+
+.. code-block::
 
   tls.version:SSL% OR tls.version:TLSv1 OR tls.version:"TLS 1.1"
 
-In Splunk, this can be written as: ::
+In Splunk, this can be written as:
+
+.. code-block::
 
   event_type=tls AND tls.version IN ("SSLv2", "SSLv3", "TLSv1", "TLS 1.1")
 
@@ -315,7 +325,9 @@ The simplest way to achieve that is to use the `tls_cert_expired` keyword as see
 
   alert tls any any -> any any (msg:"expired certs"; tls_cert_expired; sid:1; rev:1;)
 
-But it is also possible to do this in Splunk: ::
+But it is also possible to do this in Splunk:
+
+.. code-block::
 
  event_type=tls |
  eval tls_after_date = strptime('tls.notafter',"%Y-%m-%dT%H:%M:%S") |
