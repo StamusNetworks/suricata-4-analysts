@@ -164,7 +164,7 @@ if os.getenv('PRINT'):
     latex_elements = {
         'geometry': r'''\usepackage[paperwidth=6.25in, paperheight=9.25in, top=0.625in, bottom=0.625in, left=0.875in, right=0.625in, includefoot, includehead]{geometry}''',
         'pointsize': '10pt',
-        'maketitle': r'''r'\newcommand\sphinxbackoftitlepage{
+        'maketitle': r'''\newcommand\sphinxbackoftitlepage{
 \vspace*{\fill}
 \textit{The Security Analyst’s Guide to Suricata} \\
 Copyright @ 2022 by Eric Leblond and Peter Manev \\
