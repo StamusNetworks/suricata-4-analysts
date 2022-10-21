@@ -95,8 +95,17 @@ latex_elements = {
 \py@release \releaseinfo
 }
 \end{titlepage}
-\AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
+\vspace*{\fill}
+\textit{The Security Analyst’s Guide to Suricata} \\
+Copyright @ 2022 by Eric Leblond and Peter Manev \\
+Published by Stamus Networks \\
+450 E. 96th Street, Suite 500 \\
+Indianapolis, IN 46240 \\
+This work is licensed under Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license. \\
+Trade hardcover: ISBN: 979-8-9871510-0-6
 \makeatother
+\newpage
+\AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
 ''',
     'printindex': r'''
 \renewcommand{\indexname}{Index}
