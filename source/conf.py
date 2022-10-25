@@ -103,7 +103,7 @@ Published by Stamus Networks \\
 450 E. 96th Street, Suite 500 \\
 Indianapolis, IN 46240 \\
 This work is licensed under Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license. \\
-Trade hardcover: ISBN: 979-8-9871510-0-6
+ISBN: 979-8-9871510-1-3
 \makeatother
 \newpage
 \AddToShipoutPictureBG{\transparent{0.5}\includegraphics[width=\paperwidth,height=12cm]{stamus-background.jpg}}
@@ -136,7 +136,7 @@ from network activity. Our advanced network detection and response (NDR)
 solutions expose threats to critical assets and empower rapid response.
 \vspace{0.8cm}
 
-Copyright \copyright 2022 \hspace{1cm} EB-NWHuntingSuri-082022-1
+Copyright \copyright 2022 \hspace{1cm} ISBN: 979-8-9871510-1-3
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}{7cm}
@@ -197,5 +197,6 @@ latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-backg
 
 
 epub_cover = ('_static/ebook-cover.jpg', '')
+epub_identifier = 'ISBN: 979-8-9871510-2-0'
 
 today_fmt = '%B %Y'
