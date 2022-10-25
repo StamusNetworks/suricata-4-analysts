@@ -70,22 +70,23 @@ latex_elements = {
 \begin{titlepage}
 \AddToShipoutPictureBG*{\BackgroundPic}
 \py@HeaderFamily
-\vspace*{2.5cm}
-\hspace*{-1.1cm}
-\begin{minipage}{12cm}
-\textcolor{yellow}{
+\vspace*{4.5cm}
+\hspace*{-0.9cm}
+\begin{minipage}{16cm}
+\textcolor{white}{
 \textbf{
 \raggedright
-\begin{spacing}{1.2}
-\fontsize{45}{55}\selectfont \@title
+\begin{spacing}{1.1}
+\fontsize{55}{65}\selectfont \@title
 \end{spacing}
 }
 }
 
-\vspace{0.4cm}
-\textcolor{white}
+\vspace{-0.1cm}
+\definecolor{title_yellow}{rgb}{0.984, 0.866, 0.004}
+\textcolor{title_yellow}
 {
-\LARGE{by \@author}
+\LARGE{By Eric Leblond \& Peter Manev}
 }
 \end{minipage}
 \par
