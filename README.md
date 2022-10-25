@@ -14,7 +14,7 @@ the Suricata community.
 ## Contribution
 
 We are listing the code/text for the book here, but you can also find the latest published
-version of the book at [Stamus Networks](https://www.stamus-networks.com/). We welcome contributions to the book and you can
+version of the book at [Stamus Networks](https://www.stamus-networks.com/suricata-4-analysts?utm_source=SN-GitHub&utm_medium=web&utm_campaign=Suricata-4-Analysts). We welcome contributions to the book and you can
 propose updates and provide feedback on this Github. If you want to contribute a specific
 topic, please [check existing issues](https://github.com/StamusNetworks/suricata-4-analysts/issues) and, if needed, open one describing your addition so we can tell you if it is
 inline with the content we project on the book and has a chance to be accepted.
