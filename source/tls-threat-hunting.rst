@@ -354,7 +354,7 @@ monitor. They contain the set of algorithms used on TLS to protect the communica
 The level of security and confidentiality provided by the various algorithms varies greatly.
 For instance, TLS_NULL_WITH_NULL_NULL is a valid TLS cipher suite and, yes, it means that nothing
 is done and the data is in clear text. While this is an extreme case, some other
-TLS cipher suites should be avoided like the one using the RC4 algorihtm.
+TLS cipher suites should be avoided like the one using the RC4 algorithm.
 
 If this information is not directly available in Suricata TLS events, it is available
 as one of the TLS JA3S parameters. The second parameter of the JA3S string is
