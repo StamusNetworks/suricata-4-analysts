@@ -3,12 +3,12 @@
 ## Introduction
 
 Stamus Networks is pleased to offer the first ‘open source’ Suricata-focused book, ``The Security Analyst’s Guide to Suricata``.
-Written by the founders of [Stamus Networks](https://www.stamus-networks.com/), Eric Leblond and Peter Manev, this project provides SOC analysts and threat
+Written by the founders of [Stamus Networks](https://www.stamus-networks.com/), Éric Leblond and Peter Manev, this project provides SOC analysts and threat
 hunters with information on entry points and in-depth coverage for the most important Suricata features.
 
 The book is not to act as a replacement for the [Suricata manual](https://suricata.readthedocs.io/en/latest/), which is
 a valuable source of information and should be used as a reference tool by Suricata users. Instead, its unique ‘open source’
-format will grow and evolve over time with ongoing input from Eric and Peter as well as contributions and feedback from
+format will grow and evolve over time with ongoing input from Éric and Peter as well as contributions and feedback from
 the Suricata community.
 
 ## Contribution

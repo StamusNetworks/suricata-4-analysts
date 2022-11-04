@@ -20,11 +20,11 @@ import os
 
 project = 'The Security Analyst’s Guide to Suricata'
 copyright = '2021-2022, Stamus Networks'
-author = 'Eric Leblond and Peter Manev'
+author = 'Éric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
-version  = '1.0'
+release = '1.0.1'
+version  = '1.0.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -86,7 +86,7 @@ latex_elements = {
 \definecolor{title_yellow}{rgb}{0.984, 0.866, 0.004}
 \textcolor{title_yellow}
 {
-\LARGE{By Eric Leblond \& Peter Manev}
+\LARGE{By Éric Leblond \& Peter Manev}
 }
 \end{minipage}
 \par
@@ -98,7 +98,7 @@ latex_elements = {
 \end{titlepage}
 \vspace*{\fill}
 \textit{The Security Analyst’s Guide to Suricata} \\
-Copyright @ 2022 by Eric Leblond and Peter Manev \\
+Copyright @ 2022 by Éric Leblond and Peter Manev \\
 Published by Stamus Networks \\
 450 E. 96th Street, Suite 500 \\
 Indianapolis, IN 46240 \\
@@ -177,7 +177,7 @@ if os.getenv('PRINT'):
         'maketitle': r'''\newcommand\sphinxbackoftitlepage{
 \vspace*{\fill}
 \textit{The Security Analyst’s Guide to Suricata} \\
-Copyright @ 2022 by Eric Leblond and Peter Manev \\
+Copyright @ 2022 by Éric Leblond and Peter Manev \\
 Published by Stamus Networks \\
 450 E. 96th Street, Suite 500 \\
 Indianapolis, IN 46240 \\

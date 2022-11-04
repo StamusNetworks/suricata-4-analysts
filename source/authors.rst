@@ -1,12 +1,12 @@
 Authors and contributors
 ========================
 
-This document has been written by Eric Leblond and Peter Manev with the help of Mark Durrett, Dallon Robinette, and Phil Owens from Stamus Networks.
+This document has been written by Éric Leblond and Peter Manev with the help of Mark Durrett, Dallon Robinette, and Phil Owens from Stamus Networks.
 
 Éric Leblond
 ------------
 
-Éric Leblond is the co-founder and chief technology officer (CTO) of Stamus Networks and a member of the board of directors at Open Network Security Foundation (OISF). Éric has more than 15 years of experience as co-founder and technologist of cybersecurity software companies and is an active member of the security and open-source communities. He has worked on the development of Suricata – the open-source network threat detection engine – since 2009 and is part of the Netfilter Core team, responsible for the Linux kernel's firewall layer. Eric is also the lead developer of the Suricata Language Server, a real-time syntax checking and autocomplete app for Suricata rule writers. Eric is a well-respected expert and speaker on network security.
+Éric Leblond is the co-founder and chief technology officer (CTO) of Stamus Networks and a member of the board of directors at Open Network Security Foundation (OISF). Éric has more than 15 years of experience as co-founder and technologist of cybersecurity software companies and is an active member of the security and open-source communities. He has worked on the development of Suricata – the open-source network threat detection engine – since 2009 and is part of the Netfilter Core team, responsible for the Linux kernel's firewall layer. Éric is also the lead developer of the Suricata Language Server, a real-time syntax checking and autocomplete app for Suricata rule writers. Éric is a well-respected expert and speaker on network security.
 
 
 Peter Manev
