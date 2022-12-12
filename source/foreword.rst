@@ -9,7 +9,7 @@ So we decided to write a simple book to introduce the most powerful features and
 
 As you may be aware, there is a dedicated team of Suricata developers continuously working to improve Suricata and releasing new capabilities regularly. So, we decided to take a more open-source software development approach to the content and release cadence of the book in order to keep it relevant and up-to-date. 
 
-The book is structured as a loose collection of chapters, each focused on a single subject area, such as Suricata rule writing or TLS detection and threat hunting. All its content is developed and managed on a `GitHub repository <https://github.com/StamusNetworks/suricata-4-analysts>`_ and is open to all who wish to comment or contribute ideas. Readers who are looking for a simple text edition may access all content there. Of course, we also package the book in PDF and eReader format for those who prefer source ‘code’ of the book. And we hope to offer a printed version soon.
+The book is structured as a loose collection of chapters, each focused on a single subject area, such as Suricata rule writing or TLS detection and threat hunting. All its content is developed and managed on a `GitHub repository <https://github.com/StamusNetworks/suricata-4-analysts>`_ and is open to all who wish to comment or contribute ideas. Readers who are looking for a simple text edition may access all content there. Of course, we also package the book in PDF and eReader format for those who prefer source ‘code’ of the book.
 
 The open-source format makes it a living book that will grow and evolve over time with ongoing input from the authors as well as contributions and feedback from the Suricata community. 
 
