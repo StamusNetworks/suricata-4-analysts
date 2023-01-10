@@ -8,7 +8,7 @@ File Analysis
 Introduction
 ============
 
-Because Suricata understands most major application layers, it is able to track the file transfered over the wire. The list of application layers supporting file extraction includes:
+Because Suricata understands most major application layers, it is able to track the file transferred over the wire. The list of application layers supporting file extraction includes:
 
  - HTTP
  - FTP
@@ -17,7 +17,7 @@ Because Suricata understands most major application layers, it is able to track 
  - SMTP
  - HTTP2 
 
-Interesting features result from this. First, it allows Suricata to generate events containing information about the files. The :ref:`fileinfo events <fileinfo-events>` are generated once any tracked file transfer is over (independantly of any detection). These events contain details about the file such as its name, various hashes of its content (sha1, sha256, ...), and identification of the file type based on its content.
+Interesting features result from this. First, it allows Suricata to generate events containing information about the files. The :ref:`fileinfo events <fileinfo-events>` are generated once any tracked file transfer is over (independently of any detection). These events contain details about the file such as its name, various hashes of its content (sha1, sha256, ...), and identification of the file type based on its content.
  
 The second interesting feature is the extraction of the file which is triggered by the `filestore <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html?#filestore>`_ keyword in signature. Extraction can also be switched on globally, but it is really intensive in term of performance. One thing to mention about extraction is that it is deduplicated as the storage of the file on the disk is done once per sha256.
 
@@ -78,11 +78,11 @@ The event contains a `fileinfo` object that contains the following fields:
  - `magic` computed by analyzing the beginning of the file
  - `size` to receive the file size
 
-It also contains a regular `http` subobject as this file was captured on an HTTP flow. On a different application's layers, a different subobject would have been present. The field `app_proto` is a good way to know which suboject will be present. 
+It also contains a regular `http` subobject as this file was captured on an HTTP flow. On a different application's layers, a different subobject would have been present. The field `app_proto` is a good way to know which subobject will be present. 
 
 This event is a good example of the value of the various mechanisms in place in Suricata. The HTTP parser told us that the file content type (`http.http_content_type`) announced by the server is an 'image\png'. This would be fine if the analysis of content of the file did not find out (in the key `fileinfo.magic`) that the file is, in reality, an executable. For reference, this file was used in an infection by the Trickbot malware.
 
-This can be confirmed by checking the sha1 or sha256 hash of the file in `Virustotal <https://www.virustotal.com/gui/file/110743634989ed7a3293b2e39ad85c255fc131c752e029f78d37d4fb8c1dc7f6>`_. This file is flagged as malicous by more than 50 security vendors and associated to Trickbot by some of them as well.
+This can be confirmed by checking the sha1 or sha256 hash of the file in `Virustotal <https://www.virustotal.com/gui/file/110743634989ed7a3293b2e39ad85c255fc131c752e029f78d37d4fb8c1dc7f6>`_. This file is flagged as malicious by more than 50 security vendors and associated to Trickbot by some of them as well.
 
 .. figure:: img/virustotal.png
   
@@ -114,7 +114,7 @@ Let's take an example with the following signature from the Emerging Threats rul
        sid:2013730; rev:4; \\
     )
 
-This is triggering on https://www.exploit-db.com/exploits/17896 that is a DOS on Activex. This signature is over the HTTP protocol and it is using the `file.data` keyword. This happens because the HTTP protocol is usually compressing the data sent from the server to lower the bandwith. As a result, a simple match on the content would have failed. By using a content match on `file.data`, we ensure a correct match on the content that is seen by the browser  even if there is server-side compression as Suricata will uncompress the content to pass the clear text content to the `file.data` keyword.
+This is triggering on https://www.exploit-db.com/exploits/17896 that is a DOS on Activex. This signature is over the HTTP protocol and it is using the `file.data` keyword. This happens because the HTTP protocol is usually compressing the data sent from the server to lower the bandwidth. As a result, a simple match on the content would have failed. By using a content match on `file.data`, we ensure a correct match on the content that is seen by the browser  even if there is server-side compression as Suricata will uncompress the content to pass the clear text content to the `file.data` keyword.
 
 The matching done in the signature is an interesting use of sticky buffer. It first does multiple content matches to check that all fixed string parts
 of the attack are there. This lowers the risk of evaluating the costly regular expression that is used as a final check for the presence of the
@@ -150,7 +150,7 @@ If checksum of file is really interesting information found in the `fileinfo` ev
 `filesha1 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha1>`_, and 
 `filesha256 <https://suricata.readthedocs.io/en/latest/rules/file-keywords.html#filesha256>`_ keywords. All of these work the same way: they are given a file as an argument that has to contain one checksum per line and they will match if the checksum of the file is on the list (or not if the match is negated). 
 
-For example, to alert on all excutables that are not on the list of known good executables (built from another tool), one can use:
+For example, to alert on all executables that are not on the list of known good executables (built from another tool), one can use:
 
 .. code-block::
 
