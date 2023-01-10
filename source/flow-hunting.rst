@@ -115,7 +115,7 @@ High volume DNS flow
 
 Similar to the previous example, DNS can also be used for data exfiltration and
 a potential consequence of the technique used is the existence of DNS flow where
-a big amount of data has been transfered.
+a big amount of data has been transferred.
 
 Using Lucene syntax, it can be written in Kibana as follows:
 
