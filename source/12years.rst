@@ -1,4 +1,4 @@
-12 years of innovation
+13 years of innovation
 ----------------------
 
 Suricata 1.0 (July 2010) - Welcome to the HTTP World
@@ -119,3 +119,16 @@ This version also added support for other important protocols, including Message
 
 Although it was an “under the hood” feature, the switch to an internally developed JSON generator in Suricata 6 is worth mentioning. With users deploying Suricata in 100 Gbps environments and with application layer logging being an important feature, the number of events per second generated can be quite high. For example, it is not uncommon for a 100 Gbps deployment to generate hundreds of thousands alert events per second on a single probe. As a consequence, the generation of JSON events using the original libjansson library ended up being a bottleneck. With Suricata 6, this was replaced by a custom JSON generator written in Rust which significantly lowers the performance burden of logging.
 
+
+Suricata 7 (July 2023)  - Maturity
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3 years have passed between the 6 and 7 versions and this was, like Covid-19, not expected. This release is featuring a bit set of improvements.
+Some really old inquiries have been addressed like the parsing, logging and detection of TLS client certificates as well as conditional pcap.
+Thist last feature was asked since multiple years. The concept is to generate a pcap file on alert to be able to have evidence and low level data
+for investigation. Full Packet capture was available since years but in term of storage this is really really costly. With conditional pcap
+capture the storage is limited to packets belonging to flows with alert.
+
+On performance side, two new packet capture mechanisms have been added. AF_XDP and DPDK are really bringing significant performance improvements at
+really high speed. Both are providing kernel bypass to avoid useless treatment in kernel as everything that matter to Suricata is the packet on the wire
+and not its routing for example. AF_XDP is available in recent Linux kernel and DPDK requires custom driver and specific NIC such as Intel ones.
