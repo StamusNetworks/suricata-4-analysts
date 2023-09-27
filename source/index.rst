@@ -22,4 +22,5 @@ The Security Analyst’s Guide to Suricata
    tls-threat-hunting
    smb-threat-hunting
    http-threat-hunting
+   dns-threat-hunting
    about

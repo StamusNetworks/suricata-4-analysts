@@ -229,6 +229,8 @@ will match on the HTTP host in its raw form.
 Cookbook
 --------
 
+.. _match subdomains:
+
 Match on a domain and its subdomains
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -242,7 +244,7 @@ or any of its subdomains:
         sid:1; rev:1;)
 
 The match is obtained by using the sticky buffer ``http.host`` to
-match on the HTTP host sent by the client. By using ``dotprefix``, a 
+match on the HTTP host sent by the client. By using ``dotprefix``, a
 ``.`` will be prepended to the buffer so it will not match on ``lovelypandabear.gov``.
 Then the signature uses the ``endswith`` keyword to ensure the string ends with the specified content.
 It will prevent a match on a domain like ``pandabear.governed.org``.
