@@ -136,7 +136,7 @@ from network activity. Our advanced network detection and response (NDR)
 solutions expose threats to critical assets and empower rapid response.
 \vspace{0.8cm}
 
-Copyright \copyright 2022-2023 \hspace{1cm} ISBN: 979-8-9871510-1-3
+Copyright \copyright 2022-2023 \hspace{1cm} ISBN: 979-8-9871510-4-4
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}{7cm}
@@ -183,9 +183,9 @@ Published by Stamus Networks \\
 Indianapolis, IN 46240 \\
 This work is licensed under Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license. \\
 Cover Design: Delin Design \\
-First printing: October, 2022 \\
+First printing: November, 2023 \\
 Printed in the United States of America \\
-Trade hardcover: ISBN: 979-8-9871510-0-6
+Trade hardcover: ISBN: 979-8-9871510-3-7
 }
 \sphinxmaketitle
         '''
@@ -197,6 +197,6 @@ latex_additional_files = ["stamus.sty", "img/stamus-logo.png", "img/stamus-backg
 
 
 epub_cover = ('_static/ebook-cover.jpg', '')
-epub_identifier = 'ISBN: 979-8-9871510-2-0'
+epub_identifier = 'ISBN: 979-8-9871510-5-1'
 
 today_fmt = '%B %Y'
