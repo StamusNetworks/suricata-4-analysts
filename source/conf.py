@@ -19,12 +19,12 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = 'The Security Analyst’s Guide to Suricata'
-copyright = '2021-2022, Stamus Networks'
+copyright = '2021-2023, Stamus Networks'
 author = 'Éric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.1'
-version  = '1.0.1'
+release = '2.0.0'
+version  = '2.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -98,7 +98,7 @@ latex_elements = {
 \end{titlepage}
 \vspace*{\fill}
 \textit{The Security Analyst’s Guide to Suricata} \\
-Copyright @ 2022 by Éric Leblond and Peter Manev \\
+Copyright @ 2022-2023 by Éric Leblond and Peter Manev \\
 Published by Stamus Networks \\
 450 E. 96th Street, Suite 500 \\
 Indianapolis, IN 46240 \\
@@ -136,7 +136,7 @@ from network activity. Our advanced network detection and response (NDR)
 solutions expose threats to critical assets and empower rapid response.
 \vspace{0.8cm}
 
-Copyright \copyright 2022 \hspace{1cm} ISBN: 979-8-9871510-1-3
+Copyright \copyright 2022-2023 \hspace{1cm} ISBN: 979-8-9871510-1-3
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}{7cm}
@@ -177,7 +177,7 @@ if os.getenv('PRINT'):
         'maketitle': r'''\newcommand\sphinxbackoftitlepage{
 \vspace*{\fill}
 \textit{The Security Analyst’s Guide to Suricata} \\
-Copyright @ 2022 by Éric Leblond and Peter Manev \\
+Copyright @ 2022-2023 by Éric Leblond and Peter Manev \\
 Published by Stamus Networks \\
 450 E. 96th Street, Suite 500 \\
 Indianapolis, IN 46240 \\
