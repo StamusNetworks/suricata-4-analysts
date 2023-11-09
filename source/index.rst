@@ -24,3 +24,4 @@ The Security Analyst’s Guide to Suricata
    http-threat-hunting
    dns-threat-hunting
    about
+   about-stamus
