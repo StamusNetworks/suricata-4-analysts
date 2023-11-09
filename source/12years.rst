@@ -123,12 +123,10 @@ Although it was an “under the hood” feature, the switch to an internally dev
 Suricata 7 (July 2023)  - Maturity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-3 years have passed between the 6 and 7 versions and this was, like Covid-19, not expected. This release is featuring a bit set of improvements.
-Some really old inquiries have been addressed like the parsing, logging and detection of TLS client certificates as well as conditional pcap.
-Thist last feature was asked since multiple years. The concept is to generate a pcap file on alert to be able to have evidence and low level data
-for investigation. Full Packet capture was available since years but in term of storage this is really really costly. With conditional pcap
-capture the storage is limited to packets belonging to flows with alert.
+Three years have passed between the versions 6 and 7 which was, like Covid-19, unexpected. This release features a bit set of improvements.
+Some really old inquiries such as the parsing, logging, and detection of TLS client certificates as well as conditional pcap have been addressed.
+The conditional pcap feature has been a common request for multiple years. The concept is to generate a pcap file on an alert in order to have evidence and low level data for investigation. Full packet capture has been available for years, but in term of storage this is incredibly costly. With conditional packet capture the storage is limited to packets belonging to flows with alert.
 
-On performance side, two new packet capture mechanisms have been added. AF_XDP and DPDK are really bringing significant performance improvements at
-really high speed. Both are providing kernel bypass to avoid useless treatment in kernel as everything that matter to Suricata is the packet on the wire
-and not its routing for example. AF_XDP is available in recent Linux kernel and DPDK requires custom driver and specific NIC such as Intel ones.
+On the performance side, two new packet capture mechanisms have been added. AF_XDP and DPDK bring significant performance improvements at
+really high speed. Both provide kernel bypass to avoid useless treatment in kernel, as everything that matters to Suricata is the packet on the wire
+rather than its routing. AF_XDP is available in the most recent Linux kernel and DPDK requires a custom driver and specific NIC such as those provded by Intel.
