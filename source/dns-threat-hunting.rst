@@ -214,7 +214,7 @@ asks the service for `_ldap._tcp.pdc._msdcs.fashionkings.com` (in field `dns.rrn
 
 The construct of the requested service is interesting at it contains a lot of information:
 
- - `_ldap._tcp` is the service from an applicative point of view
+ - `_ldap._tcp` is the service from an application point of view
  - `fashionkings.com` is the domain name.
  - `_msdcs` indicates a domain controler query
  - `pdc` is used to request the primary domain controler
