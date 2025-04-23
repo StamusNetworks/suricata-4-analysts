@@ -17,7 +17,7 @@ Most of the funding for the project now comes through private organizations via 
 People outside the foundation have made revolutionary proposals, which have profoundly changed the face of the project. They have helped Suricata to evolve over the years in order to stay current, attractive, and focused on threat detection. The timeline below illustrates some of the major Suricata milestones.
 
 .. figure:: img/Suricata_Timeline.png
-  
+
    Timeline of major Suricata versions.
 
 .. include:: 12years.rst
