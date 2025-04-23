@@ -19,12 +19,12 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = 'The Security Analyst’s Guide to Suricata'
-copyright = '2021-2023, Stamus Networks'
+copyright = '2021-2025, Stamus Networks'
 author = 'Éric Leblond and Peter Manev'
 
 # The full version, including alpha/beta/rc tags
-release = '2.0.0'
-version  = '2.0.0'
+release = '3.0.0'
+version  = '3.0.0'
 
 
 # -- General configuration ---------------------------------------------------
