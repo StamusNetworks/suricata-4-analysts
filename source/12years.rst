@@ -43,10 +43,10 @@ This mixed approach - using both IDS and network security monitoring (NSM) at th
 The evolution of TLS support has continued over multiple versions of Suricata.
 
 
-Suricata 1.4 (December 2014) - Support for Lua
+Suricata 1.4 (December 2012) - Support for Lua
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With the release of Suricata 1.4 in December 2014, Suricata added a second major signature language in Lua, a lightweight, multi-paradigm programming language designed primarily for embedded use in applications.
+With the release of Suricata 1.4 in December 2012, Suricata added a second major signature language in Lua, a lightweight, multi-paradigm programming language designed primarily for embedded use in applications.
 
 Signatures could now include a Lua script as a feature. This script uses Suricata-exposed buffers such as the packet content or the TLS information, and its return value is 1 for a match and 0 for no match. The Lua script may also create or modify flowbits variables.
 
