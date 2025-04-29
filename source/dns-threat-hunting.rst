@@ -152,7 +152,7 @@ As of Suricata 7 there are two keywords dedicated to DNS: `dns.query` and `dns.o
 It can be used to match on DNS resolution and is therefore very useful to detect Indicators of Compromise (IoCs) in
 the traffic.
 
-It worth mentioning that a DNS request to a domain does not indicate a connection to a domain but rather
+It is worth mentioning that a DNS request to a domain does not indicate a connection to a domain but rather
 the proximity to this domain. Techniques such as browser prefetch can trigger DNS resolution on hostnames that
 are not visited but are present on a visited page. Additionally, DNS requests from security analysts checking
 attacks must also be mentioned.
